@@ -1,0 +1,33 @@
+.jp-header {
+	text-align: right;
+	padding: 22px;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: row;
+	align-items: center;
+}
+
+.jp-nav-btn {
+	float: right;
+	display: block;
+	margin-left: 20px;
+	color: #56509F;
+}
+
+.jp-title {
+	padding-left: 32px;
+}
+
+.jp-logo {
+	width: 150px;
+}
+
+.jp-banner {
+	overflow: hidden;
+	text-align: center;
+	padding: 46px 0 50px 0px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-image: url('../assets/pattern.png');
+}

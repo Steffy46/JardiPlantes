@@ -1,0 +1,9 @@
+.jp-layout-inner {
+	display: flex;
+	flex-direction: row;
+	min-height: 500px;
+}
+
+a {
+	text-decoration: none;
+}
