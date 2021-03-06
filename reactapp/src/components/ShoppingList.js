@@ -5,6 +5,8 @@ import Footer from './Footer';
 import PlantItem from './PlantItem';
 import '../styles/ShoppingList.css';
 
+import { Col } from 'reactstrap';
+
 function ShoppingList() {
     const [productsList, setProductsList] = useState([]);
 
@@ -14,31 +16,30 @@ function ShoppingList() {
                 header: {'Content-Type':'body'}
             });
             let allProducts = await rawResponse.json();
-            setProductsList(allProducts.product);
+            setProductsList(allProducts.products);
         }
         getProducts()
     }, [])
 
-        let productsPlants;
-        if (productsList) {
-            productsPlants = productsList.map((plant, i) => {
+        
+           let productsPlants = productsList.map((plant, i) => {
                 return <PlantItem key={plant._id} product={plant} />
             })  
-        }
         
 
-
     return (
-        <div className='jp-shopping-list'>
-            <Header/>
-
+        
+            <Col xs="3" md="6" lg="9" xl="12">
+            <div className='jp-shopping-list'>
             <h1>Page Shopping</h1>
             <Link to='/' >Retourner à l'accueil</Link>
 
             {productsPlants}
-           
-            <Footer />
-        </div>
+            </div>
+            
+            
+            </Col>
+  
     )
 }
 

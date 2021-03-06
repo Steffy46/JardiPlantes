@@ -6,7 +6,7 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 // const usersRouter = require('./routes/users');
-const productsRouter = require('./routes/products');
+//const productsRouter = require('./routes/products');
 
 require('./models/connection');
 
@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'reactapp/build')));
 // Routes
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
-app.use(productsRouter);
+//app.use('/products', productsRouter);
 
 
 // catch 404 and forward to error handler

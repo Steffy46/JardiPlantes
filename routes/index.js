@@ -6,6 +6,8 @@ const uid2 = require('uid2');
 const bcrypt = require('bcrypt');
 
 const UserModel = require('../models/users');
+const ProductModel = require('../models/product');
+
 
 // Enregistrement du user
 router.post('/sign-up', async function(req, res, next){
@@ -142,5 +144,30 @@ router.put('/update-password', async function(req, res, next){
   
 //   res.json({ result: true })
 // })
+
+
+ router.post('/new-products', async function(req, res, next){
+
+    const newProduct = new ProductModel({
+        category: req.body.category,
+        name: req.body.name,
+        description: req.body.description,
+        price: req.body.price,
+        image: req.body.image,
+        water: req.body.water,
+        sun: req.body.sun
+    })
+
+    const productSaved = await newProduct.save();
+
+    res.json({ recorded: true, data: productSaved })
+
+ })
+
+ router.get('/products', async function(req, res, next){
+     const productsDb = await ProductModel.find()
+     //console.log('########################## LES PLANTES', productsDb);
+     res.json({ products: productsDb })
+ })
 
 module.exports = router;

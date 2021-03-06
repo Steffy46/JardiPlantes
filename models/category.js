@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const categorySchema = mongooseSchema({
     name: String,
-    descritpion: String,
+    description: String,
     age: Number,
     type: String
 });
