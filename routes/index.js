@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const UserModel = require('../models/users');
 const ProductModel = require('../models/product');
 
-
+////// USER : SIGN-IN SIGN-UP //////
 // Enregistrement du user
 router.post('/sign-up', async function(req, res, next){
 
@@ -113,9 +113,89 @@ router.put('/update-password', async function(req, res, next){
   res.json({ result, user: anwerPasswordDb })
 })
 
+////// PRODUITS "PLANTES" : AJOUT + LECTURE  //////
+// Ajout d'une nouvelle plante
+router.post('/new-products', async function(req, res, next){
+
+  const newProduct = new ProductModel({
+      category: req.body.category,
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      image: req.body.image,
+      water: req.body.water,
+      sun: req.body.sun
+  })
+
+  const productSaved = await newProduct.save();
+
+  res.json({ recorded: true, data: productSaved })
+
+})
+
+// Lire les plantes disponibles en base
+router.get('/products', async function(req, res, next){
+   const productsDb = await ProductModel.find()
+   //console.log('########################## LES PLANTES', productsDb);
+   res.json({ products: productsDb })
+})
+
+////// FAVORIS : AJOUT + SUPPRESSION  //////
+// Ajout d'une plante dans les favoris du user
+router.post('/wishlist-plants', async function(req,res,next){
+  const result = false;
+
+  const user = await UserModel.findOne({token: req.body.token});
+
+  if(user !== null){
+    const newPlants = new ProductModel({
+      category: req.body.category,
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      image: req.body.image,
+      water: req.body.water,
+      sun: req.body.sun
+    })
+
+    const savePlants = await newPlants.save();
+
+    if(savePlants.name){
+      result = true
+    }
+  }
+
+  res.json({result})
+})
+
+// Supprimer
+router.delete('/wishlist-plants', async function(req, res, next){
+  const result = false;
+  const user = await UserModel.findOne({ token: req.body.token })
+
+  if(user !== null){
+    const retrunDb = await ProductModel.deleteOne({ name: req.body.name, userId: user._id})
+
+    if(retrunDb.deleteCount === 1){
+      result = true
+    }
+  }
+
+  res.json({result})
+})
+
+router.get('/wishlist-plants', async function(req, res, next) {
+  const plants = []
+  const user = await UserModel.findOne({token: req.body.token})
+
+  if(user !== null){
+    plants = await ProductModel.find({userId: user._id})
+  }
+
+  res.json({plants})
+})
 
 
-// // Ajout d'un article dans les favoris du user
 // router.put('/add-favorite', async function(req, res, next){
 
 //   try {
@@ -130,7 +210,7 @@ router.put('/update-password', async function(req, res, next){
 //   res.json({ result: true })
 // })
 
-// // Suppression d'un article favoris du user
+// // Suppression d'une plante favorite du user
 // router.put('/remove-favorite', async function(req, res, next){
 
 //   try {
@@ -145,29 +225,5 @@ router.put('/update-password', async function(req, res, next){
 //   res.json({ result: true })
 // })
 
-
- router.post('/new-products', async function(req, res, next){
-
-    const newProduct = new ProductModel({
-        category: req.body.category,
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        image: req.body.image,
-        water: req.body.water,
-        sun: req.body.sun
-    })
-
-    const productSaved = await newProduct.save();
-
-    res.json({ recorded: true, data: productSaved })
-
- })
-
- router.get('/products', async function(req, res, next){
-     const productsDb = await ProductModel.find()
-     //console.log('########################## LES PLANTES', productsDb);
-     res.json({ products: productsDb })
- })
 
 module.exports = router;

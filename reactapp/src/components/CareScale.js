@@ -20,7 +20,7 @@ function CareScale({ scaleValue, careType} ) {
         
         <div onClick={() =>
                 alert(
-                    `Cette plante requiert ${qualityLabel[scaleValue]} ${
+                    `Cette plante a besoin de ${qualityLabel[scaleValue]} ${
                         careType === 'light' ? 'de lumière' : "d'arrosage"
                     }`
                 )

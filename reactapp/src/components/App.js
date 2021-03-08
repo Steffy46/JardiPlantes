@@ -13,9 +13,11 @@ import {Provider} from 'react-redux';
 import {createStore, combineReducers} from 'redux'
 
 /////  Reducers  //////
-import token from '../reducers/token'
+import token from '../reducers/token';
+import userFavorites from '../reducers/favorites';
+import userConnected from '../reducers/userConnected'
 
-const store = createStore(combineReducers({token}))
+const store = createStore(combineReducers({token, userConnected, userFavorites}))
 
 function App() {
 

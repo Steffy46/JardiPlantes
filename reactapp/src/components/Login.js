@@ -2,7 +2,7 @@
     import {Link, Redirect} from 'react-router-dom';
     import Header from './Header';
     import Footer from './Footer';
-    //import '../styles/Login.css';
+    import '../styles/Login.css';
     import {Input} from 'antd';
     import { Button } from 'reactstrap';
     import {connect} from 'react-redux';
@@ -44,71 +44,75 @@
             setErrorSignUp(body.error)
         }
 
-    }
+        }
 
-    const handleSubmitSignIn = async () => {
-        const data = await fetch('/sign-in', {
-            method: 'POST',
-            header: {'Content-Type':'application/x-www-form-urlencoded'},
-            body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
+        // Appel de la route /sign-in et vérification de l'existance du user en base
+        const handleSubmitSignIn = async () => {
+            const data = await fetch('/sign-in', {
+                method: 'POST',
+                header: {'Content-Type':'application/x-www-form-urlencoded'},
+                body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
+            })
+
+            const body = await data.json();
+
+            if(body.result === true){
+                props.addToken(body.token)
+                setUserExists(true)
+            } else {
+                setErrorSignIn(body.error)
+            }
+        }
+
+        if(userExists){
+            return <Redirect to='/' />
+        }
+
+        const tabErrorSignUp = errorSignUp.map((error, i) => {
+            return(<p>{error}</p>)
         })
 
-        const body = await data.json();
-
-        if(body.result === true){
-            props.addToken(body.token)
-            setUserExists(true)
-        } else {
-            setErrorSignIn(body.error)
-        }
-    }
-
-    if(userExists){
-        return <Redirect to='/' />
-    }
-
-    const tabErrorSignUp = errorSignUp.map((error, i) => {
-        return(<p>{error}</p>)
-    })
-
-    const tabErrorSignIn = errorSignIn.map((error, i) => {
-        return(<p>{error}</p>)
-    })
+        const tabErrorSignIn = errorSignIn.map((error, i) => {
+            return(<p>{error}</p>)
+        })
 
         return (
             <div>
                 <Header/>
 
-                <h1>Page Login</h1>
+                <h1>Inscription / Connection</h1>
+                <p>Bienvenue dans l'univers de Jardi Plantes ! Grâce à votre compte vous pouvez retrouver vos plantes préférées dans vos favoris :)</p>
                 <Link to='/' >Retourner à l'accueil</Link>
 
                 <div className="Login-page" >
 
             {/* SIGN-IN */}
 
-            <div className="Sign">   
-                <Input className="Login-input" placeholder="Adresse email" onChange={(e) => setSignInEmail(e.target.value)} value={signInEmail} />
+            <div className="Sign">
+                <h2>Se connecter</h2>
+                <Input className="jp-login-input" placeholder="Adresse email" onChange={(e) => setSignInEmail(e.target.value)} value={signInEmail} />
 
-                <Input.Password className="Login-input" placeholder="Mot de passe" onChange={(e) => setSignInPassword(e.target.value)} value={signInPassword} />
+                <Input.Password className="jp-login-input" placeholder="Mot de passe" onChange={(e) => setSignInPassword(e.target.value)} value={signInPassword} />
 
                 {tabErrorSignIn}
-                <Button style={{width:'80px'}} type="primary" onClick={() => handleSubmitSignIn() }>Se connecter</Button>
+                <Button style={{width:'150px'}} type="warning" onClick={() => handleSubmitSignIn() }>Se connecter</Button>
             </div>
 
             {/* SIGN-UP */}
 
-            <div className="Sign">    
-                <Input className="Login-input" placeholder="Prénom" onChange={(e) => setSignUpLastname(e.target.value)} value={signUpLastname} />
+            <div className="Sign">  
+                <h2>S'inscrire'</h2>  
+                <Input className="jp-login-input" placeholder="Prénom" onChange={(e) => setSignUpLastname(e.target.value)} value={signUpLastname} />
 
-                <Input className='Login-input' placeholder='Nom' onChange={(e) => setSignUpFirstname(e.target.value)} value={signUpFirstname} />
+                <Input className='jp-login-input' placeholder='Nom' onChange={(e) => setSignUpFirstname(e.target.value)} value={signUpFirstname} />
 
-                <Input className="Login-input" placeholder="Adresse email" onChange={(e) => setSignUpEmail(e.target.value)} value={signUpEmail} />
+                <Input className="jp-login-input" placeholder="Adresse email" onChange={(e) => setSignUpEmail(e.target.value)} value={signUpEmail} />
 
-                <Input.Password className="Login-input" placeholder="Mot de passe" onChange={(e) => setSignUpPassword(e.target.value)} value={signUpPassword} />
+                <Input.Password className="jp-login-input" placeholder="Mot de passe" onChange={(e) => setSignUpPassword(e.target.value)} value={signUpPassword} />
 
                 {tabErrorSignUp}
 
-                <Button style={{width:'80px'}} type="primary" onClick={() => handleSubmitSignUp() }>S'inscrire</Button>
+                <Button style={{width:'150px'}} type="primary" onClick={() => handleSubmitSignUp() }>S'inscrire</Button>
                 
             </div>
 

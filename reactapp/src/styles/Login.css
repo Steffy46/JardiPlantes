@@ -1,0 +1,9 @@
+.jp-login-input {
+    background-color: #FFFFFF;
+    border-radius: 5;
+    border-style: 'solid';
+    border-color: #c9c9c9;
+    border-width: 1;
+    padding: 0 8px 0 8px;
+    align-items: 'center';
+}

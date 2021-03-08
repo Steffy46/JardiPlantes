@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Cart.css';
 
+
 function Cart({ updateCart, setUpdateCart }) {
 	const [isOpen, setIsOpen] = useState(true);
 	const total = updateCart.reduce(
@@ -14,6 +15,7 @@ function Cart({ updateCart, setUpdateCart }) {
 	
 
 	return isOpen ? (
+		
 		<div className='jp-cart'>
 			<button
 				className='jp-cart-toggle-button'
@@ -40,6 +42,7 @@ function Cart({ updateCart, setUpdateCart }) {
 				<div>Votre panier est vide</div>
 			)}
 		</div>
+		
 	) : (
 		<div className='jp-cart-closed'>
 			<button

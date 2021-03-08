@@ -22,13 +22,17 @@
 	align-self: self-start;
 	padding: 0;
 	color: white;
+	width: 200px;
 }
 
 .jp-cart-closed {
 	padding: 32px;
 	width: 200px;
+	background-color: #31b572;
+
 }
 
 .jp-cart-closed > button {
 	color: black;
+	width: 200px;
 }
