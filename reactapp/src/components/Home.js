@@ -5,6 +5,8 @@ import Footer from './Footer';
 import ShoppingList from './ShoppingList';
 import '../styles/Layout.css'
 
+import { Col } from "reactstrap";
+
 function Home(){
 
     const savedCart = localStorage.getItem('updateCart')
@@ -15,7 +17,7 @@ function Home(){
       }, [updateCart])
 
     return (
-        <div>
+        <Col xs="6" md="9" lg="12">
             <div>
                 <Header/>
             </div>
@@ -26,7 +28,7 @@ function Home(){
             <div>
                 <Footer />
             </div> 
-        </div>
+        </Col>
 
         
     )

@@ -196,19 +196,19 @@ router.get('/wishlist-plants', async function(req, res, next) {
 })
 
 
-// router.put('/add-favorite', async function(req, res, next){
+router.put('/wishlist-plants', async function(req, res, next){
 
-//   try {
-//     await UserModel.updateOne(
-//       { token: req.body.token }, 
-//       { $push: { favorite: req.body.favoriteProductNew } }
-//     )
-//   } catch (error) {
-//     res.json({ result: false })
-//   }
+  try {
+    await UserModel.updateOne(
+      { token: req.body.token }, 
+      { $push: { favorite: req.body.favorite } }
+    )
+  } catch (error) {
+    res.json({ result: false })
+  }
   
-//   res.json({ result: true })
-// })
+  res.json({ result: true })
+})
 
 // // Suppression d'une plante favorite du user
 // router.put('/remove-favorite', async function(req, res, next){

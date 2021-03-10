@@ -10,7 +10,7 @@ function Cart({ updateCart, setUpdateCart }) {
 	)
 	
 	useEffect(() => {
-		document.title = `EShop : ${total} € d'achats`
+		document.title = `Panier : ${total} € d'achats`
 	}, [total])
 	
 

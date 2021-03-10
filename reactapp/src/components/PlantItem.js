@@ -6,6 +6,12 @@ import "../styles/PlantItem.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
+import BoutonBuy from './BoutonBuy';
+
+import { 
+    Button
+   } from 'reactstrap';
+
 import { connect } from 'react-redux';
 
 
@@ -16,8 +22,25 @@ function handleClick(plantName) {
 function PlantItem(props) {
 
     const [likePlant, setLikePlant] = useState({ color: '#ADADAD'});
+    const savedCart = localStorage.getItem('updateCart')
+	const [updateCart, setUpdateCart] = useState(savedCart ? JSON.parse(savedCart) : [])
 
     const plant = props.product;
+
+    function addToCart(name, price) {
+        const currentPlantSaved = updateCart.find((plante) => plante.name === name);
+        if (currentPlantSaved) {
+          const cartFilterCurrentPlant = updateCart.filter(
+            (plante) => plante.name !== name
+          );
+          setUpdateCart([
+            ...cartFilterCurrentPlant,
+            { name, price, amount: currentPlantSaved.amount + 1 },
+          ]);
+        } else {
+          setUpdateCart([...updateCart, { name, price, amount: 1 }]);
+        }
+    }
 
     useEffect(() => {
         const inFavorites = props.userFavorites.filter(fav => fav._id === props.product._id);
@@ -26,6 +49,7 @@ function PlantItem(props) {
         } else {
             setLikePlant({ color : '#ADADAD' })
         }
+
     }, [props.userFavorites])
 
     const handleFavorite = async (plant, name) => {
@@ -40,8 +64,8 @@ function PlantItem(props) {
             setLikePlant({ color: '#FF0000' })
 
             // Ajout d'une plante favorite en base
-            await fetch('/wishlist-plant', {
-                method: 'PUT',
+            await fetch('/wishlist-plants', {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `token=${props.userConnected.token}&newValue=${plant}`
             })
@@ -50,8 +74,8 @@ function PlantItem(props) {
             setLikePlant({ color : '#ADADAD' })
 
             // Suppression d'une plante favorite
-            await fetch('/wishlist-plant', {
-                method: 'PUT',
+            await fetch('/wishlist-plants', {
+                method: 'DELETE',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `token=${props.userConnected.token}&valueRemove=${plant}`
             })
@@ -78,7 +102,7 @@ function PlantItem(props) {
               Lire la suite
             </b>
           </span>{" "}
-        </p>
+        </p> 
 
         <div>
           <h6>Arrosage : </h6>
@@ -86,6 +110,10 @@ function PlantItem(props) {
           <p>Luminosité : </p>
           <CareScale careType="light" scaleValue={props.product.sun} />
         </div>
+
+        {/* <BoutonBuy /> */}
+
+        <Button onClick={() => addToCart(plant.name, plant.price)}>Acheter</Button> 
       </li>
     </div>
   );
