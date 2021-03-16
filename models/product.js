@@ -8,7 +8,8 @@ const productSchema = mongoose.Schema({
     price: Number,
     image: String,
     water: String,
-    sun: String
+    sun: String,
+    userId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }]
 })
 
 const ProductModel = mongoose.model('products', productSchema)

@@ -12,9 +12,9 @@ const ProductModel = require('../models/product');
 // Enregistrement du user
 router.post('/sign-up', async function(req, res, next){
 
-  let saveUser = null;
-  let result = false;
   var error = [];
+  let result = false;
+  let saveUser = null;
   var token = null;
 
   const data = await UserModel.findOne({
@@ -22,7 +22,7 @@ router.post('/sign-up', async function(req, res, next){
   })
 
   if(data != null){
-    error.push('Cette adresse email existe déjà dans notre base')
+    error.push('Cette adresse email existe déjà !')
   }
 
   if(req.body.lastnameFromFront === ''
@@ -90,28 +90,28 @@ router.post('/sign-in', async function(req, res, next){
 })
 
 // Mise à jour du password du user
-router.put('/update-password', async function(req, res, next){
+// router.put('/update-password', async function(req, res, next){
 
-  let result = false
+//   let result = false
 
-  var update = { 
-      password: hash
-  }
+//   var update = { 
+//       password: hash
+//   }
   
-  const updatePasswordDb = await UserModel.updateOne(
-    { 
-      token: req.body.token 
-    }, update
-  )
+//   const updatePasswordDb = await UserModel.updateOne(
+//     { 
+//       token: req.body.token 
+//     }, update
+//   )
 
-    if (updatePasswordDb.nModified === 1) {
-      result = true
-    }
+//     if (updatePasswordDb.nModified === 1) {
+//       result = true
+//     }
   
-  const anwerPasswordDb = await UserModel.findOne({ token: req.body.token });
+//   const anwerPasswordDb = await UserModel.findOne({ token: req.body.token });
   
-  res.json({ result, user: anwerPasswordDb })
-})
+//   res.json({ result, user: anwerPasswordDb })
+// })
 
 ////// PRODUITS "PLANTES" : AJOUT + LECTURE  //////
 // Ajout d'une nouvelle plante
@@ -224,6 +224,8 @@ router.put('/wishlist-plants', async function(req, res, next){
   
 //   res.json({ result: true })
 // })
+
+
 
 
 module.exports = router;

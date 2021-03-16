@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Cart.css';
 
+import { Button } from "reactstrap";
+
 
 function Cart({ updateCart, setUpdateCart }) {
 	const [isOpen, setIsOpen] = useState(true);
@@ -36,7 +38,9 @@ function Cart({ updateCart, setUpdateCart }) {
 					</ul>
 
 					<h3>Total : {total} €</h3>
-            		<button onClick={() => setUpdateCart([])}>Vider le panier</button>
+            		<Button onClick={() => setUpdateCart([])}>Vider le panier</Button>
+					<br/><br/>
+					<Button>Commander</Button>
 				</div>
 			) : (
 				<div>Votre panier est vide</div>
@@ -45,12 +49,12 @@ function Cart({ updateCart, setUpdateCart }) {
 		
 	) : (
 		<div className='jp-cart-closed'>
-			<button
+			<Button
 				className='jp-cart-toggle-button'
 				onClick={() => setIsOpen(true)}
 			>
 				Ouvrir le Panier
-			</button>
+			</Button>
 		</div>
 	)
 }

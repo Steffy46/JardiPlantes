@@ -7,12 +7,14 @@
 
 .jp-plant-item {
 	margin: 10px;
-	display: flex;
+	/* display: flex; */
 	align-items: flex-start;
 	justify-content: center;
 	flex-direction: column;
 	text-transform: capitalize;
 	position: relative;
+	float: left;
+	list-style: none;
 }
 
 .jp-plant-item-price {

@@ -6,6 +6,7 @@ import Categories from "./Categories";
 import "../styles/ShoppingList.css";
 import { LikeFilled } from "@ant-design/icons";
 import { connect } from "react-redux";
+import "../styles/PlantItem.css";
 
 import { Col, Button } from "reactstrap";
 
@@ -45,44 +46,28 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
     getProducts();
   }, []);
 
-  const saveProduct = async (plant) => {
-    props.addToWishList(plant);
-
-    const saveReq = await fetch("/wishlist-plants", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `category=${plant.category}&name=${plant.name}&description=${plant.description}&price=${plant.price}&image=${plant.image}&water=${plant.water}&sun=${plant.water}&token=${props.token}`,
-    });
-  };
 
   let productsPlants = productsList.map((plant, i) => {
     return !activeCategory || activeCategory === plant.category ? (
-      <div key={i}>
+      <div className="jp-plant-item" key={i}>
         <PlantItem
           product={plant}
-          likePlant
-          actions={[
-            <LikeFilled
-              onClick={() => {
-                saveProduct(plant);
-              }}
-            />,
-          ]}
         />
-        <Button onClick={() => addToCart(plant.name, plant.price)}>
-          Acheter
-        </Button>
-        <Button onClick={() => {saveProduct(plant)}}>
-          Favoris
+        <Button
+        style={{ backgroundColor: '#31b572', border: '0', width: '200px', alignItems: "center" }}
+        onClick={() => addToCart(plant.name, plant.price)}
+        >
+          Ajouter au panier
         </Button>
       </div>
     ) : null;
   });
 
+  
   return (
     <Col xs="6" md="9" lg="12">
       <div className="jp-shopping-list">
-        <h1>Page Shopping</h1>
+        <h1>Page shopping</h1>
         <Link to="/">Retourner à l'accueil</Link>
 
         {/* Lister les différentes catégories de plantes */}
@@ -91,34 +76,39 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
           setActiveCategory={setActiveCategory}
           activeCategory={activeCategory}
         />
+        <div className='jp-plant-item'>
 
         {productsPlants}
+        </div>
+        
       </div>
     </Col>
   );
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    addFavoritePlant: function (plant) {
-      dispatch({
-        type: "addFavoritePlant",
-        plant,
-      });
-    },
-    removeFavoritePlant: function (plant) {
-      dispatch({
-        type: "removeFavoritePlant",
-        plant,
-      });
-    },
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     addFavoritePlant: function (plant) {
+//       dispatch({
+//         type: "addFavoritePlant",
+//         plant,
+//       });
+//     },
+//     removeFavoritePlant: function (plant) {
+//       dispatch({
+//         type: "removeFavoritePlant",
+//         plant,
+//       });
+//     },
+//   };
+// }
 
-function mapStateToProps(state){
-  return {
-    token: state.token
-  }
-}
+// function mapStateToProps(state){
+//   return {
+//     token: state.token
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppingList);
+// export default connect(mapStateToProps, mapDispatchToProps)(ShoppingList);
+
+export default ShoppingList

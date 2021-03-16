@@ -9,8 +9,7 @@ const userSchema = mongoose.Schema({
     status: {
         type: String,
         enum: ['client', 'admin']
-    },
-    favorite: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }]
+    }
 })
 
 const UserModel = mongoose.model('users', userSchema)
