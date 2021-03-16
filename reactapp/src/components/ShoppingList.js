@@ -19,20 +19,20 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
     []
   );
 
-  function addToCart(name, price) {
-    const currentPlantSaved = updateCart.find((plant) => plant.name === name);
-    if (currentPlantSaved) {
-      const cartFilterCurrentPlant = updateCart.filter(
-        (plant) => plant.name !== name
-      );
-      setUpdateCart([
-        ...cartFilterCurrentPlant,
-        { name, price, amount: currentPlantSaved.amount + 1 },
-      ]);
-    } else {
-      setUpdateCart([...updateCart, { name, price, amount: 1 }]);
-    }
-  }
+  // function addToCart(name, price) {
+  //   const currentPlantSaved = updateCart.find((plant) => plant.name === name);
+  //   if (currentPlantSaved) {
+  //     const cartFilterCurrentPlant = updateCart.filter(
+  //       (plant) => plant.name !== name
+  //     );
+  //     setUpdateCart([
+  //       ...cartFilterCurrentPlant,
+  //       { name, price, amount: currentPlantSaved.amount + 1 },
+  //     ]);
+  //   } else {
+  //     setUpdateCart([...updateCart, { name, price, amount: 1 }]);
+  //   }
+  // }
 
   useEffect(() => {
     async function getProducts() {
@@ -61,20 +61,20 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
         <PlantItem
           product={plant}
           likePlant
-          actions={[
-            <LikeFilled
-              onClick={() => {
-                saveProduct(plant);
-              }}
-            />,
-          ]}
+          // actions={[
+          //   <LikeFilled
+          //     onClick={() => {
+          //       saveProduct(plant);
+          //     }}
+          //   />,
+          // ]}
         />
-        <Button onClick={() => addToCart(plant.name, plant.price)}>
+        {/* <Button onClick={() => addToCart(plant.name, plant.price)}>
           Acheter
         </Button>
         <Button onClick={() => {saveProduct(plant)}}>
           Favoris
-        </Button>
+        </Button> */}
       </div>
     ) : null;
   });
@@ -98,27 +98,28 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
   );
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    addFavoritePlant: function (plant) {
-      dispatch({
-        type: "addFavoritePlant",
-        plant,
-      });
-    },
-    removeFavoritePlant: function (plant) {
-      dispatch({
-        type: "removeFavoritePlant",
-        plant,
-      });
-    },
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     addFavoritePlant: function (plant) {
+//       dispatch({
+//         type: "addFavoritePlant",
+//         plant,
+//       });
+//     },
+//     removeFavoritePlant: function (plant) {
+//       dispatch({
+//         type: "removeFavoritePlant",
+//         plant,
+//       });
+//     },
+//   };
+// }
 
-function mapStateToProps(state){
-  return {
-    token: state.token
-  }
-}
+// function mapStateToProps(state){
+//   return {
+//     token: state.token
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppingList);
+export default ShoppingList;
+
