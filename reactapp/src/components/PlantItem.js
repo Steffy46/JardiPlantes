@@ -1,19 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 import CareScale from "./CareScale";
 import "../styles/PlantItem.css";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faVideo} from '@fortawesome/free-solid-svg-icons'
 
-import BoutonBuy from './BoutonBuy';
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Card,
+  Col,
+  CardTitle,
+  CardText,
+  CardImg,
+  CardBody,
+  Badge
+} from "reactstrap";
 
-import { 
-    Button
-   } from 'reactstrap';
-
-import { connect } from 'react-redux';
-
+// import { connect } from 'react-redux';
 
 export function handleClick(plantName) {
   alert(`Vous voulez acheter 1 ${plantName}? Très bon choix 🌱✨`);
@@ -21,69 +29,76 @@ export function handleClick(plantName) {
 
 function PlantItem(props) {
 
-    const [likePlant, setLikePlant] = useState({ color: '#ADADAD'});
-    const savedCart = localStorage.getItem('updateCart')
-	const [updateCart, setUpdateCart] = useState(savedCart ? JSON.parse(savedCart) : [])
 
-    const plant = props.product;
+  const [productsList, setProductsList] = useState([]);
+  const [plantItem, setPlantItem] = useState(false);
+  const [countPlant, setCountPlant] = useState(0);
 
-    function addToCart(name, price) {
-        const currentPlantSaved = updateCart.find((plante) => plante.name === name);
-        if (currentPlantSaved) {
-          const cartFilterCurrentPlant = updateCart.filter(
-            (plante) => plante.name !== name
-          );
-          setUpdateCart([
-            ...cartFilterCurrentPlant,
-            { name, price, amount: currentPlantSaved.amount + 1 },
-          ]);
-        } else {
-          setUpdateCart([...updateCart, { name, price, amount: 1 }]);
-        }
+  const savedCart = localStorage.getItem("updateCart");
+  // const [updateCart, setUpdateCart] = useState(savedCart ? JSON.parse(savedCart) : [])
+
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
+
+  const [qty, setQty] = useState(1);
+
+  useEffect(() => {
+    async function getProducts() {
+      const rawResponse = await fetch("/products", {
+        header: { "Content-Type": "body" },
+      });
+      let allProducts = await rawResponse.json();
+      setProductsList(allProducts.products);
     }
+    getProducts();
+  }, []);
 
-    // useEffect(() => {
-    //     const inFavorites = props.userFavorites.filter(fav => fav._id === props.product._id);
-    //     if (inFavorites.length > 0) {
-    //         setLikePlant({ color: '#FF0000' })
-    //     } else {
-    //         setLikePlant({ color : '#ADADAD' })
-    //     }
+  // const changeLiked = (name, image) => {
+  //   if(props.likePlant === true){
+  //     props.handleClickDeletePlantParent(name)
+  //   } else {
+  //     props.handleClickAddPlantParent(name, image)
+  //   }
+  // }
 
-    // }, [props.userFavorites])
+  // if(props.likePlant){
+  //   var colorLike = {color: '#E74C3C', cursor: 'pointer'}
+  // } else {
+  //   var colorLike = {cursor: 'pointer'}
+  // }
 
-    // const handleFavorite = async (plant, name) => {
-    //     const filteredFavorite = props.userFavorites.filter(fav => fav._id === plant);
 
-    //     // Ajout ou suppression d'une plante de ses favoris
-    //     if (filteredFavorite.length < 1) {
-    //         props.addFavoritePlant({
-    //             _id: plant,
-    //             name: name
-    //         })
-    //         setLikePlant({ color: '#FF0000' })
-
-    //         // Ajout d'une plante favorite en base
-    //         await fetch('/wishlist-plants', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    //             body: `token=${props.userConnected.token}&newValue=${plant}`
-    //         })
-    //     } else {
-    //         props.removeFavoritePlant(plant)
-    //         setLikePlant({ color : '#ADADAD' })
-
-    //         // Suppression d'une plante favorite
-    //         await fetch('/wishlist-plants', {
-    //             method: 'DELETE',
-    //             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    //             body: `token=${props.userConnected.token}&valueRemove=${plant}`
-    //         })
-    //     }
-    // }
 
   return (
     <div>
+      {/* <Col xs="12" lg="6" xl="4">
+        <Card style={{ marginBottom: 30 }}>
+          <CardImg top src={props.product.image} alt={props.product.name} />
+          <CardBody>
+            <p>
+              Like
+              <FontAwesomeIcon
+                style={colorLike}
+                icon={faHeart}
+                onClick={() => changeLiked(props.product.name, props.product.image)}
+              />
+            </p>
+            {/* <p>
+              Acheter{" "}
+              <FontAwesomeIcon
+                style={colorPlant}
+                // icon={faVideo}
+                onClick={() => addPlant()}
+              />{" "}
+              <Button color="secondary">{countPlant}</Button>
+            </p> 
+
+            <CardTitle>{props.product.name}</CardTitle>
+            <CardText>{props.product.description}</CardText>
+          </CardBody>
+        </Card>
+      </Col> */}
+      
       <li className="jp-plant-item" onClick={() => handleClick}>
         <span className="jp-plant-item-price">{props.product.price} €</span>
         <img
@@ -91,7 +106,6 @@ function PlantItem(props) {
           src={props.product.image}
           alt={`${props.product.name}`}
         />
-        {/* <p>Like <FontAwesomeIcon style={likePlant} icon={faHeart} onClick={() => handleFavorite(plant._id, plant.name)} /></p> */}
         <h3>{props.product.name}</h3>
         <h6>{props.product.category}</h6>
         <p className="jp-plant-item-desc">
@@ -105,45 +119,73 @@ function PlantItem(props) {
         </p> 
 
         <div>
-          <h6>Arrosage : </h6>
+          <p>Arrosage : </p>
           <CareScale careType="water" scaleValue={props.product.water} />
           <p>Luminosité : </p>
           <CareScale careType="light" scaleValue={props.product.sun} />
         </div>
 
-        {/* <BoutonBuy /> */}
+        <Button onClick={toggle}>Voir la plante</Button>
 
-        <Button onClick={() => addToCart(plant.name, plant.price)}>Voir le produit</Button> 
+        <Modal isOpen={modal} toggle={toggle}>
+          <ModalHeader toggle={toggle}>
+            <span style={{ marginBottom: 0 }}>{props.product.name}</span> <br />{" "}
+            <span style={{ color: "#bbbbbb", fontSize: "14px", marginTop: 0 }}>
+              {props.product.category}
+            </span>
+          </ModalHeader>
+          <ModalBody>
+            <div className="col-sm-4">
+              <img
+                src={props.product.image}
+                style={{ width: "100px", marginRight: "20px" }}
+              />{" "}
+            </div>
 
-        {/* <Button onClick={() => addToCart(plant.name, plant.price)}>Acheter</Button>  */}
-      </li>
+            <div className="col-sm">
+              {props.product.description}
+              <h3 className="price">€{props.product.price}</h3> <br />
+              <div
+                className="btn-group"
+                role="group"
+                aria-label="Basic example"
+              >
+                <button
+                  onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
+                  type="button"
+                  className="btn btn-secondary"
+                >
+                  -
+                </button>
+                <span className="btn btn-light qty">{qty}</span>
+                <button
+                  onClick={() => setQty(qty + 1)}
+                  type="button"
+                  className="btn btn-secondary"
+                >
+                  +
+                </button>
+              </div>
+              <br />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="secondary"
+              style={{
+                backgroundColor: "#31b572",
+                border: "0",
+                width: "120px",
+              }}
+              onClick={toggle}
+            >
+              Fermer
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </li> 
     </div>
   );
 }
 
-// function mapDispatchToProps(dispatch) {
-//     return {
-//         addFavoritePlant: function (plant) {
-//             dispatch({
-//                 type: 'addFavoritePlant',
-//                 plant
-//             })
-//         },
-//         removeFavoritePlant: function (plant) {
-//             dispatch({
-//                 type: 'removeFavoritePlant',
-//                 plant
-//             })
-//         }
-//     }
-// }
-
-// function mapStateToProps(state) {
-//     return {
-//         userFavorites: state.userFavorites,
-//         userConnected: state.userConnected
-//     }
-// }
-
-export default PlantItem
-
+export default PlantItem;

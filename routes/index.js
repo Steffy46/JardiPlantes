@@ -140,75 +140,76 @@ router.get('/products', async function(req, res, next){
    res.json({ products: productsDb })
 })
 
+
 ////// FAVORIS : AJOUT + SUPPRESSION  //////
 // Ajout d'une plante dans les favoris du user
-router.post('/wishlist-plants', async function(req,res,next){
-  const result = false;
+// router.post('/wishlist-plants', async function(req,res,next){
+//   const result = false;
 
-  const user = await UserModel.findOne({token: req.body.token});
+//   const user = await UserModel.findOne({token: req.body.token});
 
-  if(user !== null){
-    const newPlants = new ProductModel({
-      category: req.body.category,
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      image: req.body.image,
-      water: req.body.water,
-      sun: req.body.sun
-    })
+//   if(user !== null){
+//     const newPlants = new ProductModel({
+//       category: req.body.category,
+//       name: req.body.name,
+//       description: req.body.description,
+//       price: req.body.price,
+//       image: req.body.image,
+//       water: req.body.water,
+//       sun: req.body.sun
+//     })
 
-    const savePlants = await newPlants.save();
+//     const savePlants = await newPlants.save();
 
-    if(savePlants.name){
-      result = true
-    }
-  }
+//     if(savePlants.name){
+//       result = true
+//     }
+//   }
 
-  res.json({result})
-})
+//   res.json({result})
+// })
 
-// Supprimer
-router.delete('/wishlist-plants', async function(req, res, next){
-  const result = false;
-  const user = await UserModel.findOne({ token: req.body.token })
+// // Supprimer
+// router.delete('/wishlist-plants', async function(req, res, next){
+//   const result = false;
+//   const user = await UserModel.findOne({ token: req.body.token })
 
-  if(user !== null){
-    const retrunDb = await ProductModel.deleteOne({ name: req.body.name, userId: user._id})
+//   if(user !== null){
+//     const retrunDb = await ProductModel.deleteOne({ name: req.body.name, userId: user._id})
 
-    if(retrunDb.deleteCount === 1){
-      result = true
-    }
-  }
+//     if(retrunDb.deleteCount === 1){
+//       result = true
+//     }
+//   }
 
-  res.json({result})
-})
+//   res.json({result})
+// })
 
-router.get('/wishlist-plants', async function(req, res, next) {
-  const plants = []
-  const user = await UserModel.findOne({token: req.body.token})
+// router.get('/wishlist-plants', async function(req, res, next) {
+//   const plants = []
+//   const user = await UserModel.findOne({token: req.body.token})
 
-  if(user !== null){
-    plants = await ProductModel.find({userId: user._id})
-  }
+//   if(user !== null){
+//     plants = await ProductModel.find({userId: user._id})
+//   }
 
-  res.json({plants})
-})
+//   res.json({plants})
+// })
 
 
-router.put('/wishlist-plants', async function(req, res, next){
+// router.put('/wishlist-plants', async function(req, res, next){
 
-  try {
-    await UserModel.updateOne(
-      { token: req.body.token }, 
-      { $push: { favorite: req.body.favorite } }
-    )
-  } catch (error) {
-    res.json({ result: false })
-  }
+//   try {
+//     await UserModel.updateOne(
+//       { token: req.body.token }, 
+//       { $push: { favorite: req.body.favorite } }
+//     )
+//   } catch (error) {
+//     res.json({ result: false })
+//   }
   
-  res.json({ result: true })
-})
+//   res.json({ result: true })
+// })
 
 // // Suppression d'une plante favorite du user
 // router.put('/remove-favorite', async function(req, res, next){
@@ -225,5 +226,41 @@ router.put('/wishlist-plants', async function(req, res, next){
 //   res.json({ result: true })
 // })
 
+
+router.post('/wishlist-plant', async function(req, res, next) {
+
+  var newMovie = new movieModel({
+    movieName: req.body.name,
+    movieImg: req.body.img
+  })
+
+  var plantSave = await newPlant.save()
+
+  var result = false
+  if(plantSave.name){
+    result = true
+  }
+
+  res.json({result})
+});
+
+router.delete('/wishlist-plant/:name', async function(req, res, next) {
+
+  var returnDb = await ProductModel.deleteOne({ name: req.params.name})
+
+  var result = false
+  if(returnDb.deletedCount == 1){
+    result = true
+  }
+
+  res.json({result})
+});
+
+router.get('/wishlist-plant', async function(req, res, next) {
+
+  var products = await ProductModel.find()
+
+  res.json({products})
+});
 
 module.exports = router;

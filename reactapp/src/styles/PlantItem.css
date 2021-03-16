@@ -29,3 +29,13 @@
 .jp-plant-item-desc {
 	width: 250px;
 }
+
+.card {
+	margin-bottom: 40px;
+	position: relative;
+  }
+  
+  .card img {
+	display: inline-block;
+	margin: 0 auto;
+  }
