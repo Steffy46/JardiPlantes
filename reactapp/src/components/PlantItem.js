@@ -66,118 +66,112 @@ function PlantItem(props) {
 
   return (
     <div>
-      <Col xs="12" md="4" lg="2">
-        <Card
-          style={{ border: "none" }}
-          className="jp-plant-item"
-          onClick={() => handleClick}
-        >
-          <span className="jp-plant-item-price">{props.product.price} €</span>
-          <CardImg
-            className="jp-plant-item-cover"
-            top
-            src={props.product.image}
-            alt={`${props.product.name}`}
-          />
-          <CardBody>
-            <CardTitle>
-              <h3>
-                <FontAwesomeIcon
-                  style={colorLike}
-                  icon={faHeart}
-                  onClick={() =>
-                    changeLiked(props.product.name, props.product.image)
-                  }
-                />{" "}
-                {props.product.name}
-              </h3>
-            </CardTitle>
+      <li className="jp-plant-item" onClick={() => handleClick}>
+        <span className="jp-plant-item-price">{props.product.price} €</span>
+        <img
+          className="jp-plant-item-cover"
+          src={props.product.image}
+          alt={`${props.product.name}`}
+        />
+        <h3>
+          <FontAwesomeIcon
+            style={colorLike}
+            icon={faHeart}
+            onClick={() => changeLiked(props.product.name, props.product.image)}
+          />{" "}
+          {props.product.name}
+        </h3>
+        <h6>{props.product.category}</h6>
+        <p className="jp-plant-item-desc">
+          {props.product.description.slice(0, 100)} ...{" "}
+          <span style={{ color: "#FF000" }}>
+            <b>Lire la suite</b>
+          </span>{" "}
+        </p>
 
-            <CardText className="jp-plant-item-desc">
-              {/* {props.product.description.slice(0, 100)} ...{" "} */}
-              <div>
-                <p>Arrosage : <CareScale careType="water" scaleValue={props.product.water} /></p>
-                <p>Luminosité : <CareScale careType="light" scaleValue={props.product.sun} /></p>
-              </div>
-            </CardText>
-            <Button onClick={toggle}>Voir la plante</Button>
+        <div>
+          <p>
+            Arrosage :{" "}
+            <CareScale careType="water" scaleValue={props.product.water} />
+          </p>
+          <p>
+            Luminosité :{" "}
+            <CareScale careType="light" scaleValue={props.product.sun} />
+          </p>
+        </div>
+        <Button onClick={toggle}>Voir la plante</Button>
 
-            <Modal isOpen={modal} toggle={toggle}>
-              <ModalHeader toggle={toggle}>
-                <span style={{ marginBottom: 0 }}>{props.product.name}</span>{" "}
-                <br />{" "}
-                <span
-                  style={{ color: "#bbbbbb", fontSize: "14px", marginTop: 0 }}
-                >
-                  {props.product.category}
-                </span>
-              </ModalHeader>
-              <ModalBody>
-                <div className="col-sm-4">
-                  <img
-                    src={props.product.image}
-                    style={{ width: "100px", marginRight: "20px" }}
-                  />{" "}
-                </div>
+        <Modal isOpen={modal} toggle={toggle}>
+          <ModalHeader toggle={toggle}>
+            <span style={{ marginBottom: 0 }}>{props.product.name}</span> <br />{" "}
+            <span style={{ color: "#bbbbbb", fontSize: "14px", marginTop: 0 }}>
+              {props.product.category}
+            </span>
+          </ModalHeader>
+          <ModalBody>
+            <div className="col-sm-4">
+              <img
+                src={props.product.image}
+                style={{ width: "100px", marginRight: "20px" }}
+              />{" "}
+            </div>
 
-                <div className="col-sm">
-                  {props.product.description}
-                  <h3 className="price">€{props.product.price}</h3> <br />
-                  <div
-                    className="btn-group"
-                    role="group"
-                    aria-label="Basic example"
-                  >
-                    <Button
-                      onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
-                      type="button"
-                      className="btn btn-secondary"
-                    >
-                      -
-                    </Button>
-                    <span className="btn btn-light qty">{qty}</span>
-                    <Button
-                      onClick={() => setQty(qty + 1)}
-                      type="button"
-                      className="btn btn-secondary"
-                    >
-                      +
-                    </Button>
-                  </div>
-                  <FontAwesomeIcon
-                    style={colorLike}
-                    // onClick={() => addPlant()}
-                  />
-                  <Button
-                    color="secondary"
-                    style={{
-                      backgroundColor: "#31b572",
-                      border: "0",
-                      width: "120px",
-                    }}
-                  >
-                    Acheter
-                  </Button>
-                  <br />
-                </div>
-              </ModalBody>
-              <ModalFooter>
+            <div className="col-sm">
+              {props.product.description}
+              <h3 className="price">€{props.product.price}</h3> <br />
+              <div
+                className="btn-group"
+                role="group"
+                aria-label="Basic example"
+              >
                 <Button
-                  color="secondary"
-                  style={{
-                    backgroundColor: "#31b572",
-                    border: "0",
-                    width: "120px",
-                  }}
-                  onClick={toggle}
+                  onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
+                  type="button"
+                  className="btn btn-secondary"
                 >
-                  Fermer
+                  -
                 </Button>
-              </ModalFooter>
-            </Modal>
-          </CardBody>
-        </Card>
-      </Col>
+                <span className="btn btn-light qty">{qty}</span>
+                <Button
+                  onClick={() => setQty(qty + 1)}
+                  type="button"
+                  className="btn btn-secondary"
+                >
+                  +
+                </Button>
+              </div>
+              <FontAwesomeIcon
+                style={colorLike}
+                // onClick={() => addPlant()}
+              />
+              <Button
+                color="secondary"
+                style={{
+                  backgroundColor: "#31b572",
+                  border: "0",
+                  width: "120px",
+                }}
+              >
+                Acheter
+              </Button>
+              <br />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="secondary"
+              style={{
+                backgroundColor: "#31b572",
+                border: "0",
+                width: "120px",
+              }}
+              onClick={toggle}
+            >
+              Fermer
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </li>
     </div>
   );
 }
