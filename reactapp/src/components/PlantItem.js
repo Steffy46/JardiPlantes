@@ -30,7 +30,7 @@ function PlantItem(props) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
-  const [count, setCount] = useState(1);
+  const [productsCount, setProductsCount] = useState(1);
 
   useEffect(() => {
     async function getProducts() {
@@ -118,15 +118,15 @@ function PlantItem(props) {
                 aria-label="Basic example"
               >
                 <Button
-                  onClick={() => setCount(count > 1 ? count - 1 : 1)}
+                  onClick={() => setProductsCount(productsCount > 1 ? productsCount - 1 : 1)}
                   type="button"
                   className="btn btn-secondary"
                 >
                   -
                 </Button>
-                <span className="btn btn-light qty">{count}</span>
+                <span className="btn btn-light qty">{productsCount}</span>
                 <Button
-                  onClick={() => setCount(count + 1)}
+                  onClick={() => setProductsCount(productsCount + 1)}
                   type="button"
                   className="btn btn-secondary"
                 >

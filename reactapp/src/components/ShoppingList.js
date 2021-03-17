@@ -19,20 +19,20 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
     []
   );
 
-  function addToCart(name, price) {
-    const currentPlantSaved = updateCart.find((plant) => plant.name === name);
-    if (currentPlantSaved) {
-      const cartFilterCurrentPlant = updateCart.filter(
-        (plant) => plant.name !== name
-      );
-      setUpdateCart([
-        ...cartFilterCurrentPlant,
-        { name, price, amount: currentPlantSaved.amount + 1 },
-      ]);
-    } else {
-      setUpdateCart([...updateCart, { name, price, amount: 1 }]);
-    }
-  }
+  // function addToCart(name, price) {
+  //   const currentPlantSaved = updateCart.find((plant) => plant.name === name);
+  //   if (currentPlantSaved) {
+  //     const cartFilterCurrentPlant = updateCart.filter(
+  //       (plant) => plant.name !== name
+  //     );
+  //     setUpdateCart([
+  //       ...cartFilterCurrentPlant,
+  //       { name, price, amount: currentPlantSaved.amount + 1 },
+  //     ]);
+  //   } else {
+  //     setUpdateCart([...updateCart, { name, price, amount: 1 }]);
+  //   }
+  // }
 
   useEffect(() => {
     async function getProducts() {
@@ -115,6 +115,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 ) (ShoppingList);
-
-
-

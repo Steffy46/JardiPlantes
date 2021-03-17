@@ -12,7 +12,6 @@ import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
 import {
   Container,
-  Row,
   Button,
   Popover,
   PopoverHeader,
@@ -29,8 +28,6 @@ function Header() {
   const [productsCount, setProductsCount] = useState(0);
   const [productsWishList, setProductsWishList] = useState([]);
   const [productsList, setProductsList] = useState([]);
-
-  const [count, setCount] = useState(1);
 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -104,6 +101,7 @@ function Header() {
     if (result.length > 80) {
       result = result.slice(0, 80) + "...";
     }
+    
 
     return (
       <PlantItem
