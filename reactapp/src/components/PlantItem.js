@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import CareScale from "./CareScale";
 import "../styles/PlantItem.css";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart, faVideo} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 import {
   Button,
@@ -18,18 +18,15 @@ import {
   CardText,
   CardImg,
   CardBody,
-  Badge
 } from "reactstrap";
 
-// import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 export function handleClick(plantName) {
   alert(`Vous voulez acheter 1 ${plantName}? Très bon choix 🌱✨`);
 }
 
 function PlantItem(props) {
-
-
   const [productsList, setProductsList] = useState([]);
   const [plantItem, setPlantItem] = useState(false);
   const [countPlant, setCountPlant] = useState(0);
@@ -53,139 +50,155 @@ function PlantItem(props) {
     getProducts();
   }, []);
 
-  // const changeLiked = (name, image) => {
-  //   if(props.likePlant === true){
-  //     props.handleClickDeletePlantParent(name)
-  //   } else {
-  //     props.handleClickAddPlantParent(name, image)
-  //   }
-  // }
+  const changeLiked = (name, image) => {
+    if (props.likePlant === true) {
+      props.handleClickDeletePlantParent(name);
+    } else {
+      props.handleClickAddPlantParent(name, image);
+    }
+  };
 
-  // if(props.likePlant){
-  //   var colorLike = {color: '#E74C3C', cursor: 'pointer'}
-  // } else {
-  //   var colorLike = {cursor: 'pointer'}
-  // }
-
-
+  if (props.likePlant) {
+    var colorLike = { color: "#E74C3C", cursor: "pointer" };
+  } else {
+    var colorLike = { cursor: "pointer" };
+  }
 
   return (
     <div>
-      {/* <Col xs="12" lg="6" xl="4">
-        <Card style={{ marginBottom: 30 }}>
-          <CardImg top src={props.product.image} alt={props.product.name} />
+      <Col xs="12" md="4" lg="2">
+        <Card
+          style={{ border: "none" }}
+          className="jp-plant-item"
+          onClick={() => handleClick}
+        >
+          <span className="jp-plant-item-price">{props.product.price} €</span>
+          <CardImg
+            className="jp-plant-item-cover"
+            top
+            src={props.product.image}
+            alt={`${props.product.name}`}
+          />
           <CardBody>
-            <p>
-              Like
-              <FontAwesomeIcon
-                style={colorLike}
-                icon={faHeart}
-                onClick={() => changeLiked(props.product.name, props.product.image)}
-              />
-            </p>
-            {/* <p>
-              Acheter{" "}
-              <FontAwesomeIcon
-                style={colorPlant}
-                // icon={faVideo}
-                onClick={() => addPlant()}
-              />{" "}
-              <Button color="secondary">{countPlant}</Button>
-            </p> 
+            <CardTitle>
+              <h3>
+                <FontAwesomeIcon
+                  style={colorLike}
+                  icon={faHeart}
+                  onClick={() =>
+                    changeLiked(props.product.name, props.product.image)
+                  }
+                />{" "}
+                {props.product.name}
+              </h3>
+            </CardTitle>
 
-            <CardTitle>{props.product.name}</CardTitle>
-            <CardText>{props.product.description}</CardText>
+            <CardText className="jp-plant-item-desc">
+              {/* {props.product.description.slice(0, 100)} ...{" "} */}
+              <div>
+                <p>Arrosage : <CareScale careType="water" scaleValue={props.product.water} /></p>
+                <p>Luminosité : <CareScale careType="light" scaleValue={props.product.sun} /></p>
+              </div>
+            </CardText>
+            <Button onClick={toggle}>Voir la plante</Button>
+
+            <Modal isOpen={modal} toggle={toggle}>
+              <ModalHeader toggle={toggle}>
+                <span style={{ marginBottom: 0 }}>{props.product.name}</span>{" "}
+                <br />{" "}
+                <span
+                  style={{ color: "#bbbbbb", fontSize: "14px", marginTop: 0 }}
+                >
+                  {props.product.category}
+                </span>
+              </ModalHeader>
+              <ModalBody>
+                <div className="col-sm-4">
+                  <img
+                    src={props.product.image}
+                    style={{ width: "100px", marginRight: "20px" }}
+                  />{" "}
+                </div>
+
+                <div className="col-sm">
+                  {props.product.description}
+                  <h3 className="price">€{props.product.price}</h3> <br />
+                  <div
+                    className="btn-group"
+                    role="group"
+                    aria-label="Basic example"
+                  >
+                    <Button
+                      onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
+                      type="button"
+                      className="btn btn-secondary"
+                    >
+                      -
+                    </Button>
+                    <span className="btn btn-light qty">{qty}</span>
+                    <Button
+                      onClick={() => setQty(qty + 1)}
+                      type="button"
+                      className="btn btn-secondary"
+                    >
+                      +
+                    </Button>
+                  </div>
+                  <FontAwesomeIcon
+                    style={colorLike}
+                    // onClick={() => addPlant()}
+                  />
+                  <Button
+                    color="secondary"
+                    style={{
+                      backgroundColor: "#31b572",
+                      border: "0",
+                      width: "120px",
+                    }}
+                  >
+                    Acheter
+                  </Button>
+                  <br />
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  color="secondary"
+                  style={{
+                    backgroundColor: "#31b572",
+                    border: "0",
+                    width: "120px",
+                  }}
+                  onClick={toggle}
+                >
+                  Fermer
+                </Button>
+              </ModalFooter>
+            </Modal>
           </CardBody>
         </Card>
-      </Col> */}
-      
-      <li className="jp-plant-item" onClick={() => handleClick}>
-        <span className="jp-plant-item-price">{props.product.price} €</span>
-        <img
-          className="jp-plant-item-cover"
-          src={props.product.image}
-          alt={`${props.product.name}`}
-        />
-        <h3>{props.product.name}</h3>
-        <h6>{props.product.category}</h6>
-        <p className="jp-plant-item-desc">
-          {props.product.description.slice(0, 100)} ...{" "}
-          <span style={{ color: "#FF0000" }}>
-            <b>
-              <br />
-              Lire la suite
-            </b>
-          </span>{" "}
-        </p> 
-
-        <div>
-          <p>Arrosage : </p>
-          <CareScale careType="water" scaleValue={props.product.water} />
-          <p>Luminosité : </p>
-          <CareScale careType="light" scaleValue={props.product.sun} />
-        </div>
-
-        <Button onClick={toggle}>Voir la plante</Button>
-
-        <Modal isOpen={modal} toggle={toggle}>
-          <ModalHeader toggle={toggle}>
-            <span style={{ marginBottom: 0 }}>{props.product.name}</span> <br />{" "}
-            <span style={{ color: "#bbbbbb", fontSize: "14px", marginTop: 0 }}>
-              {props.product.category}
-            </span>
-          </ModalHeader>
-          <ModalBody>
-            <div className="col-sm-4">
-              <img
-                src={props.product.image}
-                style={{ width: "100px", marginRight: "20px" }}
-              />{" "}
-            </div>
-
-            <div className="col-sm">
-              {props.product.description}
-              <h3 className="price">€{props.product.price}</h3> <br />
-              <div
-                className="btn-group"
-                role="group"
-                aria-label="Basic example"
-              >
-                <button
-                  onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
-                  type="button"
-                  className="btn btn-secondary"
-                >
-                  -
-                </button>
-                <span className="btn btn-light qty">{qty}</span>
-                <button
-                  onClick={() => setQty(qty + 1)}
-                  type="button"
-                  className="btn btn-secondary"
-                >
-                  +
-                </button>
-              </div>
-              <br />
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              color="secondary"
-              style={{
-                backgroundColor: "#31b572",
-                border: "0",
-                width: "120px",
-              }}
-              onClick={toggle}
-            >
-              Fermer
-            </Button>
-          </ModalFooter>
-        </Modal>
-      </li> 
+      </Col>
     </div>
   );
 }
 
-export default PlantItem;
+function mapDispatchToProps(dispatch) {
+  return {
+    changeLiked: function (plant) {
+      dispatch({ type: "addToWishlist", plantLiked: plant });
+    },
+    saveProducts: function (plant) {
+      dispatch({ type: "saveProducts", plantLiked: plant });
+    },
+  };
+
+  // deleteToWishList: function (plant) {
+  //   dispatch({ type: "deleteProducts", plantLiked: plant });
+  // },
+}
+
+function mapStateToProps(state) {
+  return { token: state.token };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlantItem);

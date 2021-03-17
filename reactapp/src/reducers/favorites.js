@@ -1,58 +1,39 @@
-// export default function (userFavorites = [], action) {
-//     if (action.type === 'addFavoritePlant') {
-//         let newFavorites = [...userFavorites];
-//         newFavorites.push(action.plant);
-//         return newFavorites
+export default function(wishlist = [], action){
 
-//     } else if (action.type === 'removeFavoritePlant') {
-
-//         const filteredFav = userFavorites.filter(fav => fav._id !== action.plant);
-
-//         return filteredFav
-
-//     } else if (action.type === 'retrieveFavoritePlant') {
-//         return action.listFavorites
-//     } else {
-//         return userFavorites
-//     }
-// }
-
-export default function(wishList = [], action){
-
-    if(action.type == 'savePlants'){
+    if(action.type == 'addToWishlist'){
         return action.plants
-    } else if(action.type == 'addFavoritePlant'){
-        var wishListCopy = [...wishList]
+    } else if(action.type == 'addToWishlist'){
+        var wishlistCopy = [...wishlist]
 
-        var findArticle = false
+        var findPlant = false
 
-        for(let i=0;i<wishListCopy.length;i++){
-            if(wishListCopy[i].title == action.plant.name){
-                findArticle = true
+        for(let i=0;i<wishlistCopy.length;i++){
+            if(wishlistCopy[i].name == action.plantLiked.name){
+                findPlant = true
             }
         }
 
-        if(!findArticle){
-            wishListCopy.push(action.plant)
+        if(!findPlant){
+            wishlistCopy.push(action.plantLiked)
         }
         
-        return wishListCopy
-    } else if(action.type == 'removeFavoritePlant'){
-        var wishListCopy = [...wishList]
+        return wishlistCopy
+    } else if(action.type == 'saveProducts'){
+        var wishlistCopy = [...wishlist]
         var position = null
 
-        for(let i=0;i<wishListCopy.length;i++){
-            if(wishListCopy[i].title == action.title){
+        for(let i=0;i<wishlistCopy.length;i++){
+            if(wishlistCopy[i].name == action.name){
                 position = i
             }
         }
         if(position != null){
-            wishListCopy.splice(position,1)
+            wishlistCopy.splice(position,1)
         }
 
-        return wishListCopy
+        return wishlistCopy
         
     } else {
-        return wishList
+        return wishlist
     }
 }

@@ -11,13 +11,12 @@
 	align-items: flex-start;
 	justify-content: center;
 	flex-direction: column;
-	text-transform: capitalize;
 	position: relative;
 }
 
 .jp-plant-item-price {
 	position: absolute;
-	border-radius: 20px 20px 0 20px;
+	border-radius: 20px 0px 20px 20px;
 	background-color: #31b472;
 	color: white;
 	padding: 15px;

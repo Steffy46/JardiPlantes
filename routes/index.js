@@ -226,41 +226,86 @@ router.get('/products', async function(req, res, next){
 //   res.json({ result: true })
 // })
 
-
+////// FAVORIS : AJOUT + SUPPRESSION  //////
+// Ajout d'une plante dans les favoris du user
 router.post('/wishlist-plant', async function(req, res, next) {
+  const result = false;
 
-  var newMovie = new movieModel({
-    movieName: req.body.name,
-    movieImg: req.body.img
-  })
+  const user = await UserModel.findOne({token: req.body.token});
 
-  var plantSave = await newPlant.save()
 
-  var result = false
-  if(plantSave.name){
-    result = true
+  if(user !== null){
+    const newPlants = new ProductModel({
+      category: req.body.category,
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      image: req.body.image,
+      water: req.body.water,
+      sun: req.body.sun
+    })
+
+    const savePlants = await newPlants.save();
+
+    if(savePlants.name){
+      result = true
+    }
   }
 
   res.json({result})
 });
 
+
+
+// Supprimer plantes wishlist
 router.delete('/wishlist-plant/:name', async function(req, res, next) {
+  const result = false;
+  const user = await UserModel.findOne({ token: req.body.token })
 
-  var returnDb = await ProductModel.deleteOne({ name: req.params.name})
+  if(user !== null){
+    const returnDb = await ProductModel.deleteOne({ name: req.body.name, userId: user._id})
 
-  var result = false
+  // var result = false
   if(returnDb.deletedCount == 1){
     result = true
   }
+}
 
   res.json({result})
 });
 
+
+
+
 router.get('/wishlist-plant', async function(req, res, next) {
 
-  var products = await ProductModel.find()
+  // var products = await ProductModel.find()
+
+  // res.json({products})
+
+
+  const products = []
+  const user = await UserModel.findOne({token: req.body.token})
+
+  if(user !== null){
+    products = await ProductModel.find({userId: user._id})
+  }
 
   res.json({products})
+
 });
+
+
+
+// router.get('/wishlist-plants', async function(req, res, next) {
+//   const plants = []
+//   const user = await UserModel.findOne({token: req.body.token})
+
+//   if(user !== null){
+//     plants = await ProductModel.find({userId: user._id})
+//   }
+
+//   res.json({plants})
+// })
 
 module.exports = router;

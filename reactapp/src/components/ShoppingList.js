@@ -40,7 +40,8 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
         header: { "Content-Type": "body" },
       });
       let allProducts = await rawResponse.json();
-      setProductsList(allProducts.products);
+       setProductsList(allProducts.products);
+      //  props.saveProducts(allProducts.products)
     }
     getProducts();
   }, []);
@@ -98,28 +99,34 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
   );
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     addFavoritePlant: function (plant) {
-//       dispatch({
-//         type: "addFavoritePlant",
-//         plant,
-//       });
-//     },
-//     removeFavoritePlant: function (plant) {
-//       dispatch({
-//         type: "removeFavoritePlant",
-//         plant,
-//       });
-//     },
-//   };
-// }
+function mapDispatchToProps(dispatch) {
+  return {
+    addFavoritePlant: function (plant) {
+      dispatch({
+        type: "addToWishlist",
+        plant: plant,
+      });
+    },
+    saveProducts: function (plant) {
+      dispatch({
+        type: "saveProducts",
+        plant: plant,
+      });
+    }
+  };
+}
 
-// function mapStateToProps(state){
-//   return {
-//     token: state.token
-//   }
-// }
+function mapStateToProps(state){
+  return {
+    myProducts: state.wishlist,
+    token: state.token,
+  }
+}
 
-export default ShoppingList;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+) (ShoppingList);
+
+
 

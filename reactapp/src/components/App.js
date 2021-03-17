@@ -6,7 +6,6 @@ import Cart from './Cart';
 import Login from './Login';
 import Footer from './Footer';
 import ShoppingList from './ShoppingList';
-// import Catalogue from './Catalogue';
 // import Wishlist from './Wishlist';
 import '../styles/Layout.css';
 
