@@ -6,7 +6,6 @@ import Cart from './Cart';
 import Login from './Login';
 import Footer from './Footer';
 import ShoppingList from './ShoppingList';
-// import Wishlist from './Wishlist';
 import '../styles/Layout.css';
 
 import {Provider} from 'react-redux';
@@ -28,7 +27,6 @@ function App() {
           <Switch>
             <Route path='/' exact component={Home} />
             <Route path='/products' component={ShoppingList} />
-            {/* <Route path='/wishlist' component={Wishlist} /> */}
             <Route path='/header' component={Header} />
             <Route path='/cart' component={Cart} />
             <Route path='/login' component={Login} />

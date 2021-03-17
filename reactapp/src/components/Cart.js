@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Cart.css';
 
-
 function Cart({ updateCart, setUpdateCart }) {
 	const [isOpen, setIsOpen] = useState(true);
 	const total = updateCart.reduce(

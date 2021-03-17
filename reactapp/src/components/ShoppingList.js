@@ -19,20 +19,20 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
     []
   );
 
-  // function addToCart(name, price) {
-  //   const currentPlantSaved = updateCart.find((plant) => plant.name === name);
-  //   if (currentPlantSaved) {
-  //     const cartFilterCurrentPlant = updateCart.filter(
-  //       (plant) => plant.name !== name
-  //     );
-  //     setUpdateCart([
-  //       ...cartFilterCurrentPlant,
-  //       { name, price, amount: currentPlantSaved.amount + 1 },
-  //     ]);
-  //   } else {
-  //     setUpdateCart([...updateCart, { name, price, amount: 1 }]);
-  //   }
-  // }
+  function addToCart(name, price) {
+    const currentPlantSaved = updateCart.find((plant) => plant.name === name);
+    if (currentPlantSaved) {
+      const cartFilterCurrentPlant = updateCart.filter(
+        (plant) => plant.name !== name
+      );
+      setUpdateCart([
+        ...cartFilterCurrentPlant,
+        { name, price, amount: currentPlantSaved.amount + 1 },
+      ]);
+    } else {
+      setUpdateCart([...updateCart, { name, price, amount: 1 }]);
+    }
+  }
 
   useEffect(() => {
     async function getProducts() {
@@ -62,20 +62,8 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
         <PlantItem
           product={plant}
           likePlant
-          // actions={[
-          //   <LikeFilled
-          //     onClick={() => {
-          //       saveProduct(plant);
-          //     }}
-          //   />,
-          // ]}
         />
-        {/* <Button onClick={() => addToCart(plant.name, plant.price)}>
-          Acheter
-        </Button>
-        <Button onClick={() => {saveProduct(plant)}}>
-          Favoris
-        </Button> */}
+
       </div>
     ) : null;
   });

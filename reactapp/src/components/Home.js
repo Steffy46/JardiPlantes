@@ -29,7 +29,6 @@ function Home(){
                 <Footer />
             </div> 
         </Col>
-
         
     )
 }

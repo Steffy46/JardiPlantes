@@ -7,6 +7,9 @@ import PlantItem from "../components/PlantItem";
 
 import { HomeFilled } from "@ant-design/icons";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
+
 import {
   Container,
   Row,
@@ -20,15 +23,15 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Navbar,
-  NavbarToggler,
-  Collapse,
 } from "reactstrap";
 
 function Header() {
   const [productsCount, setProductsCount] = useState(0);
   const [productsWishList, setProductsWishList] = useState([]);
   const [productsList, setProductsList] = useState([]);
+
+  const [count, setCount] = useState(1);
+
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -165,9 +168,27 @@ function Header() {
               <Link to="/login">Se connecter</Link>
             </NavLink>
           </NavItem>
+          <span className="fa-layers fa-2x">
+            <FontAwesomeIcon
+              icon={faShoppingBag}
+              size="20"
+              style={{ transform: "scaleX(1)" }}
+            />
+            <span
+              className="badge badge-pill badge-success"
+              style={{
+                fontSize: "8pt",
+                fontWeight: 800,
+                color: "white",
+                // margin: "2px 0 2px 0",
+                position: "absolute"
+              }}
+            >
+            1
+            </span>
+          </span>
         </Nav>
       </Container>
-
     </div>
   );
 }

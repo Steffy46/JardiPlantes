@@ -12,12 +12,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Card,
-  Col,
-  CardTitle,
-  CardText,
-  CardImg,
-  CardBody,
 } from "reactstrap";
 
 import { connect } from "react-redux";
@@ -29,7 +23,6 @@ export function handleClick(plantName) {
 function PlantItem(props) {
   const [productsList, setProductsList] = useState([]);
   const [plantItem, setPlantItem] = useState(false);
-  const [countPlant, setCountPlant] = useState(0);
 
   const savedCart = localStorage.getItem("updateCart");
   // const [updateCart, setUpdateCart] = useState(savedCart ? JSON.parse(savedCart) : [])
@@ -37,7 +30,7 @@ function PlantItem(props) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
-  const [qty, setQty] = useState(1);
+  const [count, setCount] = useState(1);
 
   useEffect(() => {
     async function getProducts() {
@@ -125,15 +118,15 @@ function PlantItem(props) {
                 aria-label="Basic example"
               >
                 <Button
-                  onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
+                  onClick={() => setCount(count > 1 ? count - 1 : 1)}
                   type="button"
                   className="btn btn-secondary"
                 >
                   -
                 </Button>
-                <span className="btn btn-light qty">{qty}</span>
+                <span className="btn btn-light qty">{count}</span>
                 <Button
-                  onClick={() => setQty(qty + 1)}
+                  onClick={() => setCount(count + 1)}
                   type="button"
                   className="btn btn-secondary"
                 >
@@ -144,16 +137,6 @@ function PlantItem(props) {
                 style={colorLike}
                 // onClick={() => addPlant()}
               />
-              <Button
-                color="secondary"
-                style={{
-                  backgroundColor: "#31b572",
-                  border: "0",
-                  width: "120px",
-                }}
-              >
-                Acheter
-              </Button>
               <br />
             </div>
           </ModalBody>
@@ -161,7 +144,6 @@ function PlantItem(props) {
             <Button
               color="secondary"
               style={{
-                backgroundColor: "#31b572",
                 border: "0",
                 width: "120px",
               }}
@@ -169,6 +151,16 @@ function PlantItem(props) {
             >
               Fermer
             </Button>
+            <Button
+                color="secondary"
+                style={{
+                  backgroundColor: "#31b572",
+                  border: "0",
+                  width: "120px",
+                }}
+              >
+                Ajouter au
+              </Button>
           </ModalFooter>
         </Modal>
       </li>
