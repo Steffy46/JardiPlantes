@@ -10,10 +10,6 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Card } from "reacts
 
 import { connect } from "react-redux";
 
-function handleClick(plantName) {
-  alert(`Vous voulez acheter 1 ${plantName}? Très bon choix 🌱✨`);
-}
-
 function PlantItem(props) {
   const [productList, setProductsList] = useState([]);
   const [likePlant, setLikePlant] = useState({ color: "#ADADAD" });
@@ -65,6 +61,10 @@ function PlantItem(props) {
       setLikePlant({ color: "#ADADAD" });
     }
   }, [props.userFavorites]);
+
+  const handleClick = async (name) => {
+    alert(`Vous voulez acheter 1 ${props.product.name}? Très bon choix 🌱✨`);
+  }
 
   const handleFavorite = async (plant, name) => {
     const filteredFavorite = props.userFavorites.filter(
