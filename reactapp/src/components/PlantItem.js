@@ -6,8 +6,6 @@ import "../styles/PlantItem.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
-import BoutonBuy from "./BoutonBuy";
-
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Card } from "reactstrap";
 
 import { connect } from "react-redux";
@@ -17,12 +15,34 @@ function handleClick(plantName) {
 }
 
 function PlantItem(props) {
-  const [productsList, setProductsList] = useState([]);
-
+  const [likePlant, setLikePlant] = useState({ color: "#ADADAD" });
   const savedCart = localStorage.getItem("updateCart");
+  const [updateCart, setUpdateCart] = useState(
+    savedCart ? JSON.parse(savedCart) : []
+  );
+  const [productList, setProductsList] = useState([]);
+
+const plant = props.product;
+
+  
 
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
+
+  function addToCart(name, price) {
+    const currentPlantSaved = updateCart.find((plante) => plante.name === name);
+    if (currentPlantSaved) {
+      const cartFilterCurrentPlant = updateCart.filter(
+        (plante) => plante.name !== name
+      );
+      setUpdateCart([
+        ...cartFilterCurrentPlant,
+        { name, price, amount: currentPlantSaved.amount + 1 },
+      ]);
+    } else {
+      setUpdateCart([...updateCart, { name, price, amount: 1 }]);
+    }
+  }
 
   useEffect(() => {
     async function getProducts() {
@@ -35,6 +55,49 @@ function PlantItem(props) {
     getProducts();
   }, []);
 
+  useEffect(() => {
+    const inFavorites = props.userFavorites.filter(
+      (fav) => fav._id === props.product._id
+    );
+    if (inFavorites.length > 0) {
+      setLikePlant({ color: "#FF0000" });
+    } else {
+      setLikePlant({ color: "#ADADAD" });
+    }
+  }, [props.userFavorites]);
+
+  const handleFavorite = async (plant, name) => {
+    const filteredFavorite = props.userFavorites.filter(
+      (fav) => fav._id === plant
+    );
+
+    // Ajout ou suppression d'une plante de ses favoris
+    if (filteredFavorite.length < 1) {
+      props.addFavoritePlant({
+        _id: plant,
+        name: name,
+      });
+      setLikePlant({ color: "#FF0000" });
+
+      // Ajout d'une plante favorite en base
+      await fetch("/wishlist-plants", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `token=${props.userConnected.token}&newValue=${plant}`,
+      });
+    } else {
+      props.removeFavoritePlant(plant);
+      setLikePlant({ color: "#ADADAD" });
+
+      // Suppression d'une plante favorite
+      await fetch("/wishlist-plants", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `token=${props.userConnected.token}&valueRemove=${plant}`,
+      });
+    }
+  };
+
   return (
     <div>
       <Card>
@@ -45,7 +108,11 @@ function PlantItem(props) {
           src={props.product.image}
           alt={`${props.product.name}`}
         />
-        <h3>{props.product.name}</h3>
+        <h3><FontAwesomeIcon
+            style={likePlant}
+            icon={faHeart}
+            onClick={() => handleFavorite(plant._id, plant.name)}
+          />{" "}{props.product.name}</h3>
         <h6>{props.product.category}</h6>
         <p className="jp-plant-item-desc">
       {props.product.description.slice(0, 100)}...{" "}
@@ -96,6 +163,9 @@ function PlantItem(props) {
           <CareScale careType="water" scaleValue={props.product.water} />
           <p>Luminosité : </p>
           <CareScale careType="light" scaleValue={props.product.sun} />
+          <Button onClick={() => addToCart(plant.name, plant.price)}>
+          Acheter
+        </Button>
         </div>
       </li>
       </Card>
@@ -103,4 +173,28 @@ function PlantItem(props) {
   );
 }
 
-export default PlantItem;
+function mapDispatchToProps(dispatch) {
+  return {
+    addFavoritePlant: function (plant) {
+      dispatch({
+        type: "addFavoritePlant",
+        plant,
+      });
+    },
+    removeFavoritePlant: function (plant) {
+      dispatch({
+        type: "removeFavoritePlant",
+        plant,
+      });
+    },
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    userFavorites: state.userFavorites,
+    userConnected: state.userConnected,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlantItem);

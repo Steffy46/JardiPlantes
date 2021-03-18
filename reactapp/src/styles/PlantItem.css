@@ -11,8 +11,7 @@
 	align-items: flex-start;
 	justify-content: center;
 	flex-direction: column;
-	text-transform: capitalize;
-	position: relative;
+	/* position: relative; */
 	float: left;
 	list-style: none;
 }
