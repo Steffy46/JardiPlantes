@@ -111,4 +111,13 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
 
 // export default connect(mapStateToProps, mapDispatchToProps)(ShoppingList);
 
+// function mapStateToProps(state){
+//   return{myArticles: state.wishList}
+// }
+
+// export default connect(
+//   mapStateToProps,
+//   null
+// )(ShoppingList)
+
 export default ShoppingList

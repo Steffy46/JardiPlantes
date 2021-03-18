@@ -6,8 +6,7 @@ import Cart from './Cart';
 import Login from './Login';
 import Footer from './Footer';
 import ShoppingList from './ShoppingList';
-// import Catalogue from './Catalogue';
-// import Wishlist from './Wishlist';
+import Wishlist from './Wishlist';
 import '../styles/Layout.css';
 
 import {Provider} from 'react-redux';
@@ -15,10 +14,10 @@ import {createStore, combineReducers} from 'redux'
 
 /////  Reducers  //////
 import token from '../reducers/token';
-import userFavorites from '../reducers/favorites';
 import userConnected from '../reducers/userConnected'
+import wishList from '../reducers/favorites';
 
-const store = createStore(combineReducers({token, userConnected, userFavorites}))
+const store = createStore(combineReducers({token, userConnected, wishList}))
 
 function App() {
   
@@ -30,8 +29,7 @@ function App() {
           <Switch>
             <Route path='/' exact component={Home} />
             <Route path='/products' component={ShoppingList} />
-            {/* <Route path='/catalogue' component={Catalogue} /> */}
-            {/* <Route path='/wishlist' component={Wishlist} /> */}
+            <Route path='/wishlist' component={Wishlist} />
             <Route path='/header' component={Header} />
             <Route path='/cart' component={Cart} />
             <Route path='/login' component={Login} />
@@ -39,10 +37,6 @@ function App() {
           </Switch>
         </Router>
       </Provider>
-
-      
-
-     
     </div>
   )
 }

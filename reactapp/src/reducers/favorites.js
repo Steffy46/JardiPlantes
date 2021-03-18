@@ -1,48 +1,30 @@
-// export default function (userFavorites = [], action) {
-//     if (action.type === 'addFavoritePlant') {
-//         let newFavorites = [...userFavorites];
-//         newFavorites.push(action.plant);
-//         return newFavorites
-
-//     } else if (action.type === 'removeFavoritePlant') {
-
-//         const filteredFav = userFavorites.filter(fav => fav._id !== action.plant);
-
-//         return filteredFav
-
-//     } else if (action.type === 'retrieveFavoritePlant') {
-//         return action.listFavorites
-//     } else {
-//         return userFavorites
-//     }
-// }
 
 export default function(wishList = [], action){
 
-    if(action.type == 'savePlants'){
-        return action.plants
-    } else if(action.type == 'addFavoritePlant'){
-        var wishListCopy = [...wishList]
+    if(action.type === 'addArticle'){
+        const wishListCopy = [...wishList]
+        wishListCopy.push(action.articleLiked)
 
-        var findArticle = false
+        const findArticle = false
 
-        for(let i=0;i<wishListCopy.length;i++){
-            if(wishListCopy[i].title == action.plant.name){
+        for(let i=0; i<wishListCopy.length; i++){
+            if(wishListCopy[i].title === action.articleLiked.title){
                 findArticle = true
             }
         }
 
         if(!findArticle){
-            wishListCopy.push(action.plant)
+            wishListCopy.push(action.articleLiked)
         }
-        
-        return wishListCopy
-    } else if(action.type == 'removeFavoritePlant'){
-        var wishListCopy = [...wishList]
-        var position = null
 
-        for(let i=0;i<wishListCopy.length;i++){
-            if(wishListCopy[i].title == action.title){
+        return wishListCopy
+    
+    } else if(action.type === 'deleteArticle') {
+        const wishListCopy = [...wishList]
+        const position = null
+
+        for(let i=0; i<wishListCopy.length; i++){
+            if(wishListCopy[i].title === action.title){
                 position = i
             }
         }
@@ -51,7 +33,7 @@ export default function(wishList = [], action){
         }
 
         return wishListCopy
-        
+    
     } else {
         return wishList
     }

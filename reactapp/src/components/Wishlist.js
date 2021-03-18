@@ -1,149 +1,179 @@
-import React, { useState, useEffect } from 'react';
-import {Link} from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
-import '../styles/Categories.css'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import CareScale from "./CareScale";
 
-import { Card, Modal} from 'antd';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import "../styles/ShoppingList.css";
 import { LikeFilled } from "@ant-design/icons";
-
 import { connect } from "react-redux";
+import "../styles/PlantItem.css";
 
 
-const { Meta } = Card;
+
+import { Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 function Wishlist(props) {
+  const [productsList, setProductsList] = useState([]);
+  const [modal, setModal] = useState(false);
 
-  const [visible, setVisible] = useState(false)
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
 
-  const handleFavorite = '';
+  const toggle = () => setModal(!modal);
 
-  useEffect(() => {
-    const findPlantsWishList = async () => {
-      const dataWishlist = await fetch(`/wishlist-plants?token=${props.token}`)
-      const body = await dataWishlist.json()
+  const article = props.product;
 
-      props.savePlants(body.plants)
-    }
-
-    findPlantsWishList()
-  },[])
-
-  var deletePlant = async (name) => {
-    props.deleteToWishList(name)
-
-    const deleteReq = await fetch('/wishlist-article', {
-      method: 'DELETE',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: `name=${name}&token=${props.token}`
-    })
+  let noArticles
+  if(props.myArticles === 0){
+    noArticles = <div style={{marginTop: "120px"}}>Vous n'avez ajouté aucune plante à vos favoris</div>
   }
 
-  var handleOk = e => {
-    console.log(e)
-    setVisible(false)
-  }
+  return (
+    <Col xs="6" md="9" lg="12">
+      <div className="jp-shopping-list">
+        <h1>Ma wishlist</h1>
+        <Link to="/">Retourner à l'accueil</Link>
 
-  var handleCancel = e => {
-    console.log(e)
-    setVisible(false)
-  }
+       <div>{noArticles}</div> 
 
-  var noArticles
-  if(props.myProducts == 0){
-    noArticles = <div style={{marginTop:"30px"}}>No Articles</div>
-  }
+        {/* <div className="jp-plant-item">
+          {props.myArticles.map((plant, i) => {
+            <div key={i} className="jp-plant-item">
+              {/* <PlantItem product={plant} /> */}
 
+              {/* <li className="jp-plant-item">
+                <span className="jp-plant-item-price">{plant.price} €</span>
+                <img
+                  className="jp-plant-item-cover"
+                  src={plant.image}
+                  alt={`${plant.name}`}
+                />
+                <h3>
+                  <FontAwesomeIcon
+                    style={props.likePlant}
+                    icon={faHeart}
+                    onClick={() => {
+                      props.addToWishList(article);
+                    }}
+                  />{" "}
+                  {plant.name}
+                </h3>
+                <h6>{plant.category}</h6>
+                <p className="jp-plant-item-desc">
+                  {plant.description.slice(0, 100)}...{" "}
+                  <span style={{ color: "#31b572" }}>
+                    <b>
+                      <br />
+                      <span style={{ color: "#FF000" }} onClick={toggle}>
+                        Lire la suite
+                      </span>
 
-    return (
-        <div className='jp-shopping-list'>
-            <Header/>
+                      <Modal isOpen={modal} toggle={toggle}>
+                        <ModalHeader toggle={toggle}>
+                          <span style={{ marginBottom: 0 }}>
+                            {plant.name}
+                          </span>{" "}
+                          <br />{" "}
+                          <span
+                            style={{
+                              color: "#bbbbbb",
+                              fontSize: "14px",
+                              marginTop: 0,
+                            }}
+                          >
+                            {plant.category}
+                          </span>
+                        </ModalHeader>
+                        <ModalBody>
+                          <img
+                            src={plant.image}
+                            style={{ width: "100px", marginRight: "20px" }}
+                          />{" "}
+                          {plant.description}
+                          <div
+                            className="btn-group"
+                            role="group"
+                            aria-label="Basic example"
+                          >
+                            <Button
+                              onClick={() =>
+                                props.setProductsCount(
+                                  props.productsCount > 1 ? props.productsCount - 1 : 1
+                                )
+                              }
+                              type="button"
+                              className="btn btn-secondary"
+                            >
+                              -
+                            </Button>
+                            <span className="btn btn-light qty">
+                              {props.productsCount}
+                            </span>
+                            <Button
+                              onClick={() =>
+                                props.setProductsCount(props.productsCount + 1)
+                              }
+                              type="button"
+                              className="btn btn-secondary"
+                            >
+                              +
+                            </Button>
+                          </div>
+                        </ModalBody>
+                        <ModalFooter>
+                          <Button
+                            color="secondary"
+                            style={{
+                              backgroundColor: "#31b572",
+                              border: "0",
+                              width: "120px",
+                            }}
+                            onClick={toggle}
+                          >
+                            Fermer
+                          </Button>
+                        </ModalFooter>
+                      </Modal>
+                    </b>
+                  </span>{" "}
+                </p>
 
-            <h1>Page Wishlist</h1>
-            <Link to='/' >Retourner à l'accueil</Link>
-            
-
-            {/* Lister toutes les plantes */}
-            <ul className='jp-plant-list'>
-            {noArticles}
-
-            {props.myProducts.map((plant,i) => (
-                <div key={i} style={{display:'flex',justifyContent:'center'}}>
-
-                  <Card
-                    
-                    style={{ 
-                    width: 300, 
-                    margin:'15px', 
-                    display:'flex',
-                    flexDirection: 'column',
-                    justifyContent:'space-between' }}
-                    cover={
-                    <img
-                        alt="example"
-                        src={plant.image}
-                    />
-                    }
-                    actions={[
-                        // <Icon type="read" key="ellipsis2" onClick={() => showModal(article.title,article.content)} />,
-                        <LikeFilled onClick={() => deletePlant(plant.name)} />,
-                        <FontAwesomeIcon icon={faHeart} onClick={() => handleFavorite(plant._id, plant.name)} />
-                    ]}
-                    >
-
-                    <Meta
-                      title={plant.name}
-                      description={plant.description}
-                    />
-
-                  </Card>
-                  <Modal
-                    title={title}
-                    visible={visible}
-                    onOk={handleOk}
-                    onCancel={handleCancel}
+                <div>
+                  <h6>Arrosage : </h6>
+                  <CareScale careType="water" scaleValue={plant.water} />
+                  <p>Luminosité : </p>
+                  <CareScale careType="light" scaleValue={plant.sun} />
+                  <Button onClick={toggle}>Voir la plante</Button>
+                  <br />
+                  <Button onClick={() => props.deleteToWishList(article.title)}>Supprimer de mes favoris</Button>
+                  <br />
+                  {/* <Button
+                    onClick={() => addToCart(article.name, article.price)}
                   >
-                    <p>{title}</p>
-                  </Modal>
-
-                </div>
-
-              ))}
-
-            </ul>
-            
-            <Footer />
-        </div>
-    )
+                    Acheter
+                  </Button> */}
+                {/* </div>
+              </li> */}
+            {/* </div>;
+          })} */}
+        {/* </div> */} 
+      </div>
+    </Col>
+  );
 }
 
-function mapStateToProps(state){
-    return {myProducts: state.wishList, token:state.token}
-  }
-  
-  function mapDispatchToProps(dispatch){
-    return {
-      deleteToWishList: function(plantTitle){
-        dispatch({type: 'deletePlant',
-          title: plantTitle
-        })
-      },
-      savePlants: function(plants){
-        dispatch({type: 'saveArticles',
-          plants: plants
-        })
-      }
+function mapStateToProps(state) {
+  return { myArticles: state.wishList };
+}
+
+function mapDispatchToProps(dispatch){
+  return {
+    deleteToWishList: function(articleTitle){
+      dispatch({type: 'deleteArticle', 
+      title: articleTitle
+      })
     }
   }
-  
-  
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Wishlist);
-  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Wishlist);

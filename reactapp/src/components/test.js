@@ -1,192 +1,208 @@
 import React, { useEffect, useState } from "react";
-import "../styles/Header.css";
-import { Link } from "react-router-dom";
 
-import logo from "../assets/jardiplante-logo.png";
-import PlantItem from "../components/PlantItem";
-
-import { HomeFilled } from "@ant-design/icons";
+import CareScale from "./CareScale";
+import "../styles/PlantItem.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
-import {
-  Container,
-  Button,
-  Popover,
-  PopoverHeader,
-  PopoverBody,
-  ListGroup,
-  ListGroupItem,
-  ListGroupItemText,
-  Nav,
-  NavItem,
-  NavLink,
-} from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
-function Header() {
-  const [productsCount, setProductsCount] = useState(0);
-  const [productsWishList, setProductsWishList] = useState([]);
-  const [productsList, setProductsList] = useState([]);
+import { connect } from "react-redux";
 
+function PlantItem(props) {
+  const [productList, setProductsList] = useState([]);
+  const [likePlant, setLikePlant] = useState({ color: "#ADADAD" });
+  const [modal, setModal] = useState(false);
+  const [productsCount, setProductsCount] = useState(1);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const savedCart = localStorage.getItem("updateCart");
+  const [updateCart, setUpdateCart] = useState(
+    savedCart ? JSON.parse(savedCart) : []
+  );
 
-  const toggle = () => setIsOpen(!isOpen);
+  const toggle = () => setModal(!modal);
 
-  useEffect(() => {
-    async function loadData() {
-      const response = await fetch("/products");
-      const jsonResponse = await response.json();
-      setProductsList(jsonResponse.products);
+  const plant = props.product;
 
-      const responseWish = await fetch("wishlist-plant");
-      const jsonResponseWish = await responseWish.json();
-
-      const wishlistFromDB = jsonResponseWish.products.map((plant, i) => {
-        return { name: plant.name, img: plant.image };
-      });
-
-      setProductsWishList(wishlistFromDB);
-      setProductsCount(jsonResponseWish.products.length);
+  // Ajouter une plante dans le panier (Nom de la plante + prix)
+  function addToCart(name, price) {
+    const currentPlantSaved = updateCart.find((plante) => plante.name === name);
+    if (currentPlantSaved) {
+      const cartFilterCurrentPlant = updateCart.filter(
+        (plante) => plante.name !== name
+      );
+      setUpdateCart([
+        ...cartFilterCurrentPlant,
+        { name, price, amount: currentPlantSaved.amount + 1 },
+      ]);
+    } else {
+      setUpdateCart([...updateCart, { name, price, amount: 1 }]);
     }
-    loadData();
-  }, []);
+  }
 
-  const handleClickAddPlant = async (name, image) => {
-    setProductsCount(productsCount + 1);
-    setProductsWishList([...productsWishList, { name: name, image: image }]);
+  // Liste des plantes inscrites en DB
+  // useEffect(() => {
+  //   async function getProducts() {
+  //     const rawResponse = await fetch("/products", {
+  //       header: { "Content-Type": "body" },
+  //     });
+  //     let allProducts = await rawResponse.json();
+  //     setProductsList(allProducts.products);
+  //   }
+  //   getProducts();
+  // }, []);
 
-    const response = await fetch("/wishlist-plant", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `name=${name}&image=${image}`,
-    });
-  };
 
-  const handleClickDeletePlant = async (name) => {
-    setProductsCount(productsCount - 1);
-    setProductsWishList(
-      productsWishList.filter((object) => object.name != name)
-    );
+  // Plantes favorites
+  // useEffect(() => {
+  //   const inFavorites = props.userFavorites.filter(
+  //     (fav) => fav._id === props.product._id
+  //   );
+  //   if (inFavorites.length > 0) {
+  //     setLikePlant({ color: "#FF0000" });
+  //   } else {
+  //     setLikePlant({ color: "#ADADAD" });
+  //   }
+  // }, [props.userFavorites]);
 
-    const response = await fetch(`/wishlist-plant/${name}`, {
-      method: "DELETE",
-    });
-  };
+  // Alerte simple - pour test
+  const handleClick = async () => {
+    alert(`Vous voulez acheter 1 plante ${props.product.name}? Très bon choix 🌱✨`);
+  }
 
-  const cardWish = productsWishList.map((plant, i) => {
-    return (
-      <ListGroupItem>
-        <ListGroupItemText
-          onClick={() => {
-            handleClickDeletePlant(plant.name);
-          }}
-        >
-          <img width="25%" src={plant.image} /> {plant.name}
-        </ListGroupItemText>
-      </ListGroupItem>
-    );
-  });
+  // 
+  // const handleFavorite = async (plant, name) => {
+  //   const filteredFavorite = props.userFavorites.filter(
+  //     (fav) => fav._id === plant
+  //   );
 
-  const productListItems = productsList.map((plant, i) => {
-    var result = productsWishList.find(
-      (element) => element.name === plant.name
-    );
-    var isSee = false;
-    if (result != undefined) {
-      isSee = true;
-    }
-    var result = plant;
-    if (result.length > 80) {
-      result = result.slice(0, 80) + "...";
-    }
-    
+  //   // Ajout ou suppression d'une plante de ses favoris
+  //   if (filteredFavorite.length < 1) {
+  //     props.addFavoritePlant({
+  //       _id: plant,
+  //       name: name,
+  //     });
+  //     setLikePlant({ color: "#FF0000" });
 
-    return (
-      <PlantItem
-        key={i}
-        likePlant={isSee}
-        handleClickDeletePlantParent={handleClickDeletePlant}
-        handleClickAddPlantParent={handleClickAddPlant}
-        name={plant.name}
-      />
-    );
-  });
+  //     // Ajout d'une plante favorite en base
+  //     await fetch("/wishlist-plants", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  //       body: `token=${props.userConnected.token}&newValue=${plant.name}`,
+  //     });
+  //   } else {
+  //     props.removeFavoritePlant(plant);
+  //     setLikePlant({ color: "#ADADAD" });
+
+  //     // Suppression d'une plante favorite
+  //     await fetch("/wishlist-plants", {
+  //       method: "DELETE",
+  //       headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  //       body: `token=${props.userConnected.token}&valueRemove=${plant.name}`,
+  //     });
+  //   }
+  // };
 
   return (
-    <div className="jp-header">
-      <Container>
-        <Nav className="jp-nav-btn">
-          <span className="jp-header">
-            <img src={logo} alt="E-Shop" className="jp-logo" />
-          </span>
+    <div>
+      <li className="jp-plant-item">
+        <span className="jp-plant-item-price">{props.product.price} €</span>
+        <img
+          className="jp-plant-item-cover"
+          src={props.product.image}
+          alt={`${props.product.name}`}
+        />
+        <h3>
+          <FontAwesomeIcon
+            style={likePlant}
+            icon={faHeart}
+            // onClick={() => handleFavorite(plant._id, plant.name, plant.image)}
+          />{" "}{props.product.name}</h3>
+        <h6>{props.product.category}</h6>
+        <p className="jp-plant-item-desc">
+      {props.product.description.slice(0, 100)}...{" "}
 
-          <NavItem>
-            <NavLink>
-              <Button id="Popover1" type="button">
-                {productsCount} Wishlist
-              </Button>
-              <Popover
-                placement="bottom"
-                isOpen={isOpen}
-                target="Popover1"
-                toggle={toggle}
+          <span style={{ color: "#31b572" }}>
+
+            <b>
+              <br />
+              <span style={{ color: "#FF000" }} onClick={toggle}>Lire la suite</span>
+
+              <Modal isOpen={modal} toggle={toggle}>
+                <ModalHeader toggle={toggle}>
+                  <span style={{ marginBottom: 0 }}>{props.product.name}</span>{" "}
+                  <br />{" "}
+                  <span
+                    style={{ color: "#bbbbbb", fontSize: "14px", marginTop: 0 }}
+                  >
+                    {props.product.category}
+                  </span>
+                </ModalHeader>
+                <ModalBody>
+                  <img
+                    src={props.product.image}
+                    style={{ width: "100px", marginRight: "20px" }}
+                  />{" "}
+                  {props.product.description}
+
+                  <div
+                className="btn-group"
+                role="group"
+                aria-label="Basic example"
               >
-                <PopoverHeader>WishList</PopoverHeader>
-                <PopoverBody>
-                  <ListGroup>{cardWish}</ListGroup>
-                </PopoverBody>
-              </Popover>
-            </NavLink>
-          </NavItem>
+                <Button
+                  onClick={() => setProductsCount(productsCount > 1 ? productsCount - 1 : 1)}
+                  type="button"
+                  className="btn btn-secondary"
+                >
+                  -
+                </Button>
+                <span className="btn btn-light qty">{productsCount}</span>
+                <Button
+                  onClick={() => setProductsCount(productsCount + 1)}
+                  type="button"
+                  className="btn btn-secondary"
+                >
+                  +
+                </Button>
+              </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    color="secondary"
+                    style={{
+                      backgroundColor: "#31b572",
+                      border: "0",
+                      width: "120px",
+                    }}
+                    onClick={toggle}
+                  >
+                    Fermer
+                  </Button>
+                </ModalFooter>
+              </Modal>
+            </b>
+          </span>{" "}
+        </p>
 
-          <NavItem>
-            <NavLink>
-              <Link to="/">
-                <HomeFilled />
-              </Link>
-            </NavLink>
-          </NavItem>
-
-          <NavItem>
-            <NavLink>
-              <Link to="/products">Boutique</Link>
-            </NavLink>
-          </NavItem>
-
-          <NavItem>
-            <NavLink>
-              <Link to="/wishlist">Wishlist</Link>
-            </NavLink>
-          </NavItem>
-
-          <NavItem>
-            <NavLink>
-              <Link to="/login">Se connecter</Link>
-            </NavLink>
-          </NavItem>
-          <span className="fa-layers fa-2x">
-            <FontAwesomeIcon
-              icon={faShoppingBag}
-              size="20"
-              style={{ transform: "scaleX(1)" }}
-            />
-            <span
-              className="badge badge-pill badge-success"
-              style={{
-                fontSize: "8pt",
-                fontWeight: 800,
-                color: "white",
-                // margin: "2px 0 2px 0",
-                position: "absolute"
-              }}
-            >
-            1
-            </span>
-          </span>
-        </Nav>
-      </Container>
+        <div>
+          <h6>Arrosage : </h6>
+          <CareScale careType="water" scaleValue={props.product.water} />
+          <p>Luminosité : </p>
+          <CareScale careType="light" scaleValue={props.product.sun} />
+          <Button onClick={toggle}>Voir la plante</Button>
+          <br/>
+          <Button onClick={() => handleClick()}>Alerte</Button>
+          <br/>
+          <Button onClick={() => addToCart(plant.name, plant.price)}>
+          Acheter
+        </Button>
+        </div>
+      </li>
     </div>
   );
 }
+
+
+export default PlantItem;
