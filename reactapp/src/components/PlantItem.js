@@ -15,19 +15,19 @@ function handleClick(plantName) {
 }
 
 function PlantItem(props) {
+  const [productList, setProductsList] = useState([]);
   const [likePlant, setLikePlant] = useState({ color: "#ADADAD" });
+  const [modal, setModal] = useState(false);
+  const [productsCount, setProductsCount] = useState(1);
+
   const savedCart = localStorage.getItem("updateCart");
   const [updateCart, setUpdateCart] = useState(
     savedCart ? JSON.parse(savedCart) : []
   );
-  const [productList, setProductsList] = useState([]);
 
-const plant = props.product;
-
-  
-
-  const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
+
+  const plant = props.product;
 
   function addToCart(name, price) {
     const currentPlantSaved = updateCart.find((plante) => plante.name === name);
@@ -100,18 +100,18 @@ const plant = props.product;
 
   return (
     <div>
-      <Card>
-      <li className="jp-plant-item" onClick={() => handleClick}>
+      <li className="jp-plant-item" onClick={() => handleClick()}>
         <span className="jp-plant-item-price">{props.product.price} €</span>
         <img
           className="jp-plant-item-cover"
           src={props.product.image}
           alt={`${props.product.name}`}
         />
-        <h3><FontAwesomeIcon
+        <h3>
+          <FontAwesomeIcon
             style={likePlant}
             icon={faHeart}
-            onClick={() => handleFavorite(plant._id, plant.name)}
+            onClick={() => handleFavorite(plant._id, plant.name, plant.image)}
           />{" "}{props.product.name}</h3>
         <h6>{props.product.category}</h6>
         <p className="jp-plant-item-desc">
@@ -121,7 +121,7 @@ const plant = props.product;
 
             <b>
               <br />
-              <span onClick={toggle}>Lire la suite</span>
+              <span style={{ color: "#FF000" }} onClick={toggle}>Lire la suite</span>
 
               <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>
@@ -139,6 +139,28 @@ const plant = props.product;
                     style={{ width: "100px", marginRight: "20px" }}
                   />{" "}
                   {props.product.description}
+
+                  <div
+                className="btn-group"
+                role="group"
+                aria-label="Basic example"
+              >
+                <Button
+                  onClick={() => setProductsCount(productsCount > 1 ? productsCount - 1 : 1)}
+                  type="button"
+                  className="btn btn-secondary"
+                >
+                  -
+                </Button>
+                <span className="btn btn-light qty">{productsCount}</span>
+                <Button
+                  onClick={() => setProductsCount(productsCount + 1)}
+                  type="button"
+                  className="btn btn-secondary"
+                >
+                  +
+                </Button>
+              </div>
                 </ModalBody>
                 <ModalFooter>
                   <Button
@@ -163,12 +185,12 @@ const plant = props.product;
           <CareScale careType="water" scaleValue={props.product.water} />
           <p>Luminosité : </p>
           <CareScale careType="light" scaleValue={props.product.sun} />
+          <Button onClick={toggle}>Voir la plante</Button>
           <Button onClick={() => addToCart(plant.name, plant.price)}>
           Acheter
         </Button>
         </div>
       </li>
-      </Card>
     </div>
   );
 }
