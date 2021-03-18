@@ -100,7 +100,7 @@ function PlantItem(props) {
 
   return (
     <div>
-      <li className="jp-plant-item" onClick={() => handleClick()}>
+      <li className="jp-plant-item">
         <span className="jp-plant-item-price">{props.product.price} €</span>
         <img
           className="jp-plant-item-cover"
@@ -186,6 +186,9 @@ function PlantItem(props) {
           <p>Luminosité : </p>
           <CareScale careType="light" scaleValue={props.product.sun} />
           <Button onClick={toggle}>Voir la plante</Button>
+          <br/>
+          <Button onClick={() => handleClick()}>Alerte</Button>
+          <br/>
           <Button onClick={() => addToCart(plant.name, plant.price)}>
           Acheter
         </Button>
