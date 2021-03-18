@@ -5,7 +5,7 @@ export default function(wishList = [], action){
         const wishListCopy = [...wishList]
         wishListCopy.push(action.articleLiked)
 
-        const findArticle = false
+        let findArticle = false
 
         for(let i=0; i<wishListCopy.length; i++){
             if(wishListCopy[i].title === action.articleLiked.title){
@@ -21,7 +21,7 @@ export default function(wishList = [], action){
     
     } else if(action.type === 'deleteArticle') {
         const wishListCopy = [...wishList]
-        const position = null
+        let position = null
 
         for(let i=0; i<wishListCopy.length; i++){
             if(wishListCopy[i].title === action.title){

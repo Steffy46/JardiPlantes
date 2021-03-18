@@ -68,9 +68,20 @@ function PlantItem(props) {
 
   // Alerte simple - pour test
   const handleClick = async () => {
-    alert(`Vous voulez acheter la plante "${props.product.name}" ? Très bon choix 🌱✨`);
+    alert(`Vous voulez acheter la plante "${article.name}" ? Très bon choix 🌱✨`);
   }
 
+  var saveArticle = async article => {
+    props.addToWishList({
+      name: article.name
+    })
+
+    const saveReq = await fetch('/wishlist-plants', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: `name=${article.name}&price=${article.price}&description=${article.description}&image=${article.image}&token=${props.token}`
+    })
+  }
   
   // const handleFavorite = async (plant, name) => {
   //   const filteredFavorite = props.userFavorites.filter(
@@ -104,6 +115,8 @@ function PlantItem(props) {
   //   }
   // };
 
+
+
   return (
     <div>
       <li className="jp-plant-item">
@@ -117,7 +130,7 @@ function PlantItem(props) {
           <FontAwesomeIcon
             style={likePlant}
             icon={faHeart}
-            onClick={() => {props.addToWishList(article)} }
+            onClick={() => {saveArticle(article)} }
           />{" "}{article.name}</h3>
         <h6>{article.category}</h6>
         <p className="jp-plant-item-desc">
@@ -208,7 +221,7 @@ function PlantItem(props) {
 function mapDispatchToProps(dispatch){
   return {
     addToWishList: function(article){
-      console.log('clic detecte');
+      console.log('clic detecte ' + article.name);
       dispatch({type: 'addArticle', 
       articleLiked: article
       })

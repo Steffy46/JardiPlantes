@@ -32,7 +32,7 @@ router.post('/sign-up', async function(req, res, next){
     error.push('Champs vides')
   }
 
-  if (error.length === 0) {
+  if (error.length == 0) {
     var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
     const newUser = new UserModel({
       firstname: req.body.firstnameFromFront,
@@ -68,7 +68,7 @@ router.post('/sign-in', async function(req, res, next){
     error.push('Champs vides')
   }
 
-  if (error.length === 0) {
+  if (error.length == 0) {
     const user =  await UserModel.findOne({
       email: req.body.emailFromfront,
     });
@@ -194,38 +194,5 @@ router.get('/wishlist-plants', async function(req, res, next) {
 
   res.json({plants})
 })
-
-
-router.put('/wishlist-plants', async function(req, res, next){
-
-  try {
-    await UserModel.updateOne(
-      { token: req.body.token }, 
-      { $push: { favorite: req.body.favorite } }
-    )
-  } catch (error) {
-    res.json({ result: false })
-  }
-  
-  res.json({ result: true })
-})
-
-// // Suppression d'une plante favorite du user
-// router.put('/remove-favorite', async function(req, res, next){
-
-//   try {
-//     await UserModel.updateOne(
-//       { token: req.body.token }, 
-//       { $pull: { favorite: req.body.favoriteProductRemove } }
-//     )
-//   } catch (error) {
-//     res.json({ result: false })
-//   }
-  
-//   res.json({ result: true })
-// })
-
-
-
 
 module.exports = router;

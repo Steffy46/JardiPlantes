@@ -29,13 +29,14 @@ function Login(props) {
 
   // Appel de la route /sign-up et enregistrement des données du user en base
   const handleSubmitSignUp = async () => {
-    const data = await fetch("/sign-up", {
+    const data = await fetch('/sign-up', {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `lastnameFromFront=${signUpLastname}&firstnameFromFront=${signUpFirstname}&emailFromfront=${signUpEmail}&passwordFromFront=${signUpPassword}`,
     });
 
-    const body = await data.json();
+    const body = await data.json()
+    console.log(body)
 
     if (body.result === true) {
       props.addToken(body.token);
@@ -47,13 +48,15 @@ function Login(props) {
 
   // Appel de la route /sign-in et vérification de l'existance du user en base
   const handleSubmitSignIn = async () => {
-    const data = await fetch("/sign-in", {
+    const data = await fetch('/sign-in', {
       method: "POST",
-      header: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `emailFromfront=${signInEmail}&passwordFromFront=${signInPassword}`,
     });
 
-    const body = await data.json();
+    const body = await data.json()
+    console.log(body)
+
 
     if (body.result === true) {
       props.addToken(body.token);
@@ -64,15 +67,15 @@ function Login(props) {
   };
 
   if (userExists) {
-    return <Redirect to="/" />;
+    return <Redirect to='/' />;
   }
 
   const tabErrorSignIn = errorSignIn.map((error, i) => {
-    return <p>{error}</p>;
+    return (<p>{error}</p>)
   });
 
   const tabErrorSignUp = errorSignUp.map((error, i) => {
-    return <p>{error}</p>;
+    return (<p>{error}</p>)
   });
 
   return (
@@ -82,7 +85,7 @@ function Login(props) {
       <h1>Inscription / Connection</h1>
       <p>
         Bienvenue dans l'univers de Jardi Plantes ! Grâce à votre compte vous
-        pouvez retrouver vos plantes préférées dans vos favoris :)
+        pouvez retrouver vos plantes préférées dans vos favoris
       </p>
       <Link to="/">Retourner à l'accueil</Link>
 
@@ -162,15 +165,15 @@ function Login(props) {
 
       <Footer />
     </div>
-  );
+  )
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addToken: function (token) {
+    addToken: function(token) {
       dispatch({ type: "addToken", token: token });
-    },
-  };
+    }
+  }
 }
 
 export default connect(null, mapDispatchToProps)(Login);

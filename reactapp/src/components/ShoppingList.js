@@ -47,6 +47,8 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
   }, []);
 
 
+
+
   let productsPlants = productsList.map((plant, i) => {
     return !activeCategory || activeCategory === plant.category ? (
       <div className="jp-plant-item" key={i}>
