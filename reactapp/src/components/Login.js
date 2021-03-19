@@ -38,7 +38,7 @@ function Login(props) {
     const body = await data.json()
     console.log(body)
 
-    if (body.result === true) {
+    if(body.result === true) {
       props.addToken(body.token);
       setUserExists(true);
     } else {
@@ -58,7 +58,7 @@ function Login(props) {
     console.log(body)
 
 
-    if (body.result === true) {
+    if(body.result === true) {
       props.addToken(body.token);
       setUserExists(true);
     } else {
@@ -168,7 +168,7 @@ function Login(props) {
   )
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     addToken: function(token) {
       dispatch({ type: "addToken", token: token });

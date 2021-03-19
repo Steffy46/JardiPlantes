@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Cart.css';
 
 import { Button } from "reactstrap";
+import { connect } from "react-redux";
 
 
 function Cart({ updateCart, setUpdateCart }) {
@@ -59,4 +60,14 @@ function Cart({ updateCart, setUpdateCart }) {
 	)
 }
 
-export default Cart
+
+function mapStateToProps(state) {
+	return { 
+	  token: state.token
+	 };
+  }
+  
+  export default connect(
+	mapStateToProps,
+	null
+  )(Cart)

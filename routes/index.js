@@ -51,7 +51,7 @@ router.post('/sign-up', async function(req, res, next){
     }
   } 
 
-  res.json({ result, saveUser, error, token })
+  res.json({ result, saveUser, token, error })
 })
 
 // Connection du user
@@ -86,32 +86,9 @@ router.post('/sign-in', async function(req, res, next){
     }
   } 
 
-  res.json({ result, user, error, token })
+  res.json({ result, user, token, error })
 })
 
-// Mise à jour du password du user
-// router.put('/update-password', async function(req, res, next){
-
-//   let result = false
-
-//   var update = { 
-//       password: hash
-//   }
-  
-//   const updatePasswordDb = await UserModel.updateOne(
-//     { 
-//       token: req.body.token 
-//     }, update
-//   )
-
-//     if (updatePasswordDb.nModified === 1) {
-//       result = true
-//     }
-  
-//   const anwerPasswordDb = await UserModel.findOne({ token: req.body.token });
-  
-//   res.json({ result, user: anwerPasswordDb })
-// })
 
 ////// PRODUITS "PLANTES" : AJOUT + LECTURE  //////
 // Ajout d'une nouvelle plante

@@ -4,13 +4,12 @@ import PlantItem from "./PlantItem";
 import Categories from "./Categories";
 
 import "../styles/ShoppingList.css";
-import { LikeFilled } from "@ant-design/icons";
-import { connect } from "react-redux";
+
 import "../styles/PlantItem.css";
 
 import { Col, Button } from "reactstrap";
 
-function ShoppingList({props, updateCart, setUpdateCart}) {
+function ShoppingList({updateCart, setUpdateCart}) {
   const [productsList, setProductsList] = useState([]);
   const [activeCategory, setActiveCategory] = useState("");
 
@@ -87,39 +86,5 @@ function ShoppingList({props, updateCart, setUpdateCart}) {
     </Col>
   );
 }
-
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     addFavoritePlant: function (plant) {
-//       dispatch({
-//         type: "addFavoritePlant",
-//         plant,
-//       });
-//     },
-//     removeFavoritePlant: function (plant) {
-//       dispatch({
-//         type: "removeFavoritePlant",
-//         plant,
-//       });
-//     },
-//   };
-// }
-
-// function mapStateToProps(state){
-//   return {
-//     token: state.token
-//   }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(ShoppingList);
-
-// function mapStateToProps(state){
-//   return{myArticles: state.wishList}
-// }
-
-// export default connect(
-//   mapStateToProps,
-//   null
-// )(ShoppingList)
 
 export default ShoppingList

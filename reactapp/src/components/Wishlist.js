@@ -71,7 +71,7 @@ function Wishlist(props) {
                   <p>Luminosité : </p>
                   <CareScale careType="light" scaleValue={plant.sun} />
                   <br />
-                  <Button onClick={() => props.deleteToWishList(article.title)}>
+                  <Button onClick={() => props.deleteToWishList(article)}>
                     Supprimer de mes favoris
                   </Button>
                 </div>
@@ -97,7 +97,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     deleteToWishList: function (articleTitle) {
-      dispatch({ type: "deleteArticle", title: articleTitle });
+      dispatch({ 
+        type: "deleteArticle", 
+        title: articleTitle 
+      });
     },
   };
 }
