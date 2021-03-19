@@ -18,7 +18,7 @@ function Home(){
 
     return (
         <Col xs="6" md="9" lg="12">
-            <div>
+            <div className="Font-link">
                 <Header/>
             </div>
             <div className='jp-layout-inner'>

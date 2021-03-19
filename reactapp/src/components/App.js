@@ -23,7 +23,7 @@ function App() {
   
 
   return (
-    <div>
+    <div className="Font-link">
       <Provider store={store}>
         <Router>
           <Switch>
