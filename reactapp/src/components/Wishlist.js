@@ -52,6 +52,7 @@ function Wishlist(props) {
 
         <div className="jp-plant-item" >
           {props.myArticles.map((plant, i) => {
+            return (
             <div key={i} className="jp-plant-item">
 
               <li className="jp-plant-item">
@@ -76,6 +77,7 @@ function Wishlist(props) {
                 </div>
               </li>
             </div>
+            )
           })}
         </div>
       </div>
@@ -87,7 +89,9 @@ function Wishlist(props) {
 }
 
 function mapStateToProps(state) {
-  return { myArticles: state.wishList };
+  return { 
+    myArticles: state.wishList
+  };
 }
 
 function mapDispatchToProps(dispatch) {

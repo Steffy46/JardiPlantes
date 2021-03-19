@@ -17,7 +17,7 @@
 }
 
 .jp-plant-item-price {
-	position: absolute;
+	/* position: absolute; */
 	border-radius: 20px 20px 0 20px;
 	background-color: #31b472;
 	color: white;

@@ -73,13 +73,19 @@ function PlantItem(props) {
 
   var saveArticle = async article => {
     props.addToWishList({
-      name: article.name
+      name: article.name,
+      image: article.image,
+      category: article.category,
+      description: article.description,
+      price: article.price,
+      water: article.water,
+      sun: article.sun
     })
 
     const saveReq = await fetch('/wishlist-plants', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: `name=${article.name}&price=${article.price}&description=${article.description}&image=${article.image}&token=${props.token}`
+      body: `name=${article.name}&price=${article.price}&description=${article.description}&image=${article.image}&token=${props.token.token}`
     })
   }
   
@@ -229,8 +235,14 @@ function mapDispatchToProps(dispatch){
   }
 }
 
+function mapStateToProps(state) {
+  return { 
+    token: state.token
+   };
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(PlantItem)
 
