@@ -179,6 +179,7 @@ function mapDispatchToProps(dispatch) {
       });
     },
     deleteToWishList: function (id) {
+      console.log("clic detecte " + id.name);
       dispatch({
         type: "deleteArticle",
         title: id,
