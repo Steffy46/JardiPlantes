@@ -20,10 +20,10 @@ export default function(wishList = [], action){
         return wishListCopy
     
     } else if(action.type === 'deleteArticle') {
-        console.log('00', wishList)
-        console.log('01', action.title)
+        // console.log('00', wishList)
+        // console.log('01', action.title)
        let wishListCopy = [...wishList]
-        console.log('02', wishListCopy);
+        // console.log('02', wishListCopy);
         // let position = null
 
 
@@ -32,7 +32,7 @@ export default function(wishList = [], action){
         //         position = i
         //     }
         // }
-        const wishListDeleted = wishListCopy.filter(plante => plante.id !== action.title)
+        const wishListDeleted = wishListCopy.findIndex(plante => plante.id !== action.title)
         console.log('03', wishListDeleted)
 
         // if(position != null){
