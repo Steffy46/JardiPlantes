@@ -8,7 +8,7 @@ export default function(wishList = [], action){
         let findArticle = false
 
         for(let i=0; i<wishListCopy.length; i++){
-            if(wishListCopy[i].title === action.articleLiked.title){
+            if(wishListCopy[i].title == action.articleLiked.title){
                 findArticle = true
             }
         }
@@ -24,7 +24,7 @@ export default function(wishList = [], action){
         let position = null
 
         for(let i=0; i<wishListCopy.length; i++){
-            if(wishListCopy[i].title === action.title){
+            if(wishListCopy[i].title == action.title){
                 position = i
             }
         }

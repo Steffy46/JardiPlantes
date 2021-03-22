@@ -1,36 +1,42 @@
 import React, { useState } from "react";
 
+///// Composant /////
 import CareScale from "./CareScale";
+
+///// Styles /////
 import "../styles/PlantItem.css";
 
+///// FontAwesome /////
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
+///// ReactStrap /////
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
+///// Redux /////
 import { connect } from "react-redux";
 
 function PlantItem(props) {
-  const [productList, setProductsList] = useState([]);
+  // Etat - Plante favorite - couleur coeur
   const [likePlant, setLikePlant] = useState({ color: "#ADADAD" });
+
+  // Etat modal
   const [modal, setModal] = useState(false);
-  const [productsCount, setProductsCount] = useState(1);
 
-  const savedCart = localStorage.getItem("updateCart");
-  const [updateCart, setUpdateCart] = useState(
-    savedCart ? JSON.parse(savedCart) : []
-  );
-
+  // Ouverture modal
   const toggle = () => setModal(!modal);
 
   const article = props.product;
 
-  // Alerte simple - pour test
+  // Alerte simple - pour test selection article
   const handleClick = async () => {
-    alert(`Vous voulez acheter la plante "${article.name}" ? Très bon choix 🌱✨`);
-  }
+    alert(
+      `Vous voulez acheter la plante "${article.name}" ? Très bon choix 🌱✨`
+    );
+  };
 
-  var saveArticle = async article => {
+  // Ajouter une plante dans la wishlist au clic sur le coeur
+  var saveArticle = async (article) => {
     props.addToWishList({
       name: article.name,
       image: article.image,
@@ -38,111 +44,105 @@ function PlantItem(props) {
       description: article.description,
       price: article.price,
       water: article.water,
-      sun: article.sun
-    })
+      sun: article.sun,
+    });
 
     if (saveArticle.length > 0) {
-           setLikePlant({ color: "#FF0000" });
-         } else {
-           setLikePlant({ color: "#ADADAD" });
-         }
+      setLikePlant({ color: "#FF0000" });
+    } else {
+      setLikePlant({ color: "#ADADAD" });
+    }
 
-    const saveReq = await fetch('/wishlist-plants', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: `name=${article.name}&price=${article.price}&description=${article.description}&image=${article.image}&token=${props.token.token}`
-    })
-  }
+    const saveReq = await fetch("/wishlist-plants", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `name=${article.name}&price=${article.price}&description=${article.description}&image=${article.image}&token=${props.token}`,
+    });
+  };
 
   return (
     <div>
       <li className="jp-plant-item">
         <span className="jp-plant-item-price">{article.price} €</span>
+
         <img
           className="jp-plant-item-cover"
           src={article.image}
           alt={`${article.name}`}
         />
+
         <h3>
           <FontAwesomeIcon
             style={likePlant}
             icon={faHeart}
-            onClick={() => {saveArticle(article)} }
-          />{" "}{article.name}</h3>
+            onClick={() => {
+              saveArticle(article);
+            }}
+          />{" "}
+          {article.name}
+        </h3>
+
         <h6>{article.category}</h6>
+
         <p className="jp-plant-item-desc">
-      {article.description.slice(0, 100)}...{" "}
-
+          {article.description.slice(0, 100)}...{" "}
           <span style={{ color: "#31b572" }}>
-
-            <b>
-              <br />
-              <span style={{ color: "#FF000" }} onClick={toggle}>Lire la suite</span>
-
-              <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>
-                  <span style={{ marginBottom: 0 }}>{props.product.name}</span>{" "}
-                  <br />{" "}
-                  <span
-                    style={{ color: "#bbbbbb", fontSize: "14px", marginTop: 0 }}
-                  >
-                    {article.category}
-                  </span>
-                </ModalHeader>
-                <ModalBody>
-                  <img
-                    src={article.image}
-                    style={{ width: "100px", marginRight: "20px" }}
-                  />{" "}
-                  {article.description}
-
-                  <div
-                className="btn-group"
-                role="group"
-                aria-label="Basic example"
-              >
-                <Button
-                  onClick={() => setProductsCount(productsCount > 1 ? productsCount - 1 : 1)}
-                  type="button"
-                  className="btn btn-secondary"
-                >
-                  -
-                </Button>
-                <span className="btn btn-light qty">{productsCount}</span>
-                <Button
-                  onClick={() => setProductsCount(productsCount + 1)}
-                  type="button"
-                  className="btn btn-secondary"
-                >
-                  +
-                </Button>
-              </div>
-                </ModalBody>
-                <ModalFooter>
-                  <Button
-                    color="secondary"
-                    style={{
-                      backgroundColor: "#31b572",
-                      border: "0",
-                      width: "120px",
-                    }}
-                    onClick={toggle}
-                  >
-                    Fermer
-                  </Button>
-                </ModalFooter>
-              </Modal>
-            </b>
+            <br />
+            <span
+              style={{ color: "#FF000", cursor: "pointer" }}
+              onClick={toggle}
+            >
+              <b>Lire la suite</b>
+            </span>
           </span>{" "}
+
+          <Modal isOpen={modal} toggle={toggle}>
+
+            <ModalHeader toggle={toggle}>
+              <span style={{ marginBottom: 0 }}>{props.product.name}</span>{" "}
+              <br />{" "}
+              <span
+                style={{ color: "#bbbbbb", fontSize: "14px", marginTop: 0 }}
+              >
+                {article.category}
+              </span>
+            </ModalHeader>
+
+            <ModalBody>
+              <img
+                src={article.image}
+                style={{ width: "100px", marginRight: "20px" }}
+              />{" "}
+              {article.description}
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                color="secondary"
+                style={{
+                  backgroundColor: "#31b572",
+                  border: "0",
+                  width: "120px",
+                }}
+                onClick={toggle}
+              >
+                Fermer
+              </Button>
+            </ModalFooter>
+
+          </Modal>
         </p>
 
         <div>
+          <h5>Entretien</h5>
           <h6>Arrosage : </h6>
           <CareScale careType="water" scaleValue={article.water} />
-          <p>Luminosité : </p>
+
+          <h6>Luminosité : </h6>
           <CareScale careType="light" scaleValue={article.sun} />
+          <br />
           <Button onClick={toggle}>Voir la plante</Button>
-          <br/>
+          <br />
           <Button onClick={() => handleClick()}>Alerte</Button>
         </div>
       </li>
@@ -150,26 +150,25 @@ function PlantItem(props) {
   );
 }
 
-
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
-    addToWishList: function(article){
-      console.log('clic detecte ' + article.name);
-      dispatch({type: 'addArticle', 
-      articleLiked: article
-      })
-    }
-  }
+    addToWishList: function (article) {
+      console.log("clic detecte " + article.name);
+      dispatch({ 
+        type: "addArticle", 
+        articleLiked: article 
+      });
+    },
+  };
 }
 
 function mapStateToProps(state) {
-  return { 
+  return {
     token: state.token
-   };
+  };
 }
 
 export default connect(
-  mapStateToProps,
+  mapStateToProps, 
   mapDispatchToProps
-)(PlantItem)
-
+)(PlantItem);

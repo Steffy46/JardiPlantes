@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
+///// Composants /////
 import PlantItem from "./PlantItem";
 import Categories from "./Categories";
 
+///// Styles /////
 import "../styles/ShoppingList.css";
-
 import "../styles/PlantItem.css";
 
+///// ReactStrap /////
 import { Col, Button } from "reactstrap";
 
-function ShoppingList({updateCart, setUpdateCart}) {
+function ShoppingList({ updateCart, setUpdateCart }) {
   const [productsList, setProductsList] = useState([]);
   const [activeCategory, setActiveCategory] = useState("");
 
+  // Catégorie des plantes
   const categories = productsList.reduce(
     (acc, plant) =>
       acc.includes(plant.category) ? acc : acc.concat(plant.category),
     []
   );
 
+  // Ajout des articles dans le panier
   function addToCart(name, price) {
     const currentPlantSaved = updateCart.find((plant) => plant.name === name);
     if (currentPlantSaved) {
@@ -34,6 +39,7 @@ function ShoppingList({updateCart, setUpdateCart}) {
     }
   }
 
+  // Appel vers la route /products --> tous les articles
   useEffect(() => {
     async function getProducts() {
       const rawResponse = await fetch("/products", {
@@ -45,9 +51,7 @@ function ShoppingList({updateCart, setUpdateCart}) {
     getProducts();
   }, []);
 
-
-
-
+  // Map des articles (plantes) / Condition ternaire des catégories des produits
   let productsPlants = productsList.map((plant, i) => {
     return !activeCategory || activeCategory === plant.category ? (
       <div className="jp-plant-item" key={i}>

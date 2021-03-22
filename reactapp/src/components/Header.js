@@ -1,92 +1,42 @@
 import React, { useState } from "react";
-import "../styles/Header.css";
 import { Link } from "react-router-dom";
 
-import logo from "../assets/jardiplante-logo.png";
+///// Styles /////
+import "../styles/Header.css";
 
+import logo from "../assets/jardiplante-logo.png";
 import { HomeFilled } from "@ant-design/icons";
 
+///// Redux /////
+import { connect } from "react-redux";
+
+///// ReactStrap /////
 import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText,
-  Button,
-  Popover,
-  PopoverBody,
-  PopoverHeader,
-  ListGroup,
 } from "reactstrap";
-
-
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const [productsCount, setProductsCount] = useState(0);
-
-
-  
   return (
     <div>
       <div className="jp-header">
         <img src={logo} alt="E-Shop" className="jp-logo" />
 
         <nav className="jp-nav-btn">
-          {/* <Menu style={{textAlign: 'center'}} mode="horizontal" theme="dark">
-
-            <Menu.Item key="mail" style={{marginRight: '50px'}}>
-              <Link to="/">
-              <HomeFilled />
-              </Link>
-            </Menu.Item>
-
-            <Menu.Item key="test" style={{marginRight: '50px'}}>
-              <Link to="/shop">
-                Boutique
-              </Link>
-            </Menu.Item>
-
-            <Menu.Item key="app" style={{marginRight: '50px'}}>
-              <Link to="/login">
-                Se connecter
-              </Link>
-            </Menu.Item>
-
-          </Menu> */}
 
           <Navbar color="light" light expand="md">
             <NavbarToggler onClick={toggle} />
             <Collapse isOpen={isOpen} navbar>
               <Nav className="mr-auto" navbar>
-              <NavItem>
-            <NavLink>
-              <Button id="Popover1" type="button">
-                {productsCount} Wishlist
-              </Button>
-              <Popover
-                placement="bottom"
-                isOpen={isOpen}
-                target="Popover1"
-                toggle={toggle}
-              >
-                <PopoverHeader>WishList</PopoverHeader>
-                <PopoverBody>
-                  {/* <ListGroup>{cardWish}</ListGroup> */}
-                </PopoverBody>
-              </Popover>
-            </NavLink>
-          </NavItem>
+
                 <NavItem>
                   <NavLink>
                     <Link to="/">
@@ -94,30 +44,45 @@ function Header() {
                     </Link>
                   </NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink>
-                    <Link to="/products">Boutique</Link>
-                  </NavLink>
-                </NavItem>
+
                 <NavItem>
                   <NavLink>
                     <Link to="/wishlist">Wishlist</Link>
                   </NavLink>
                 </NavItem>
+
                 <NavItem>
                   <NavLink>
                     <Link to="/login">Se connecter</Link>
                   </NavLink>
                 </NavItem>
+
               </Nav>
             </Collapse>
           </Navbar>
         </nav>
       </div>
 
+      {/* Barre décorative sous nav */}
       <div className="jp-banner"></div>
     </div>
   );
 }
 
-export default Header;
+function mapDispatchToProps(dispatch) {
+  return {
+    resetUserConnected: function () {
+      dispatch({
+        type: "reset",
+      });
+    },
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    userConnected: state.userConnected,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

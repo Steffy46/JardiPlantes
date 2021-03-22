@@ -1,11 +1,18 @@
 import React, {useState, useEffect} from 'react';
+
+///// Composants /////
 import Header from './Header';
 import Cart from './Cart';
 import Footer from './Footer';
 import ShoppingList from './ShoppingList';
+
+///// Styles /////
 import '../styles/Layout.css'
 
+///// ReactStrap /////
 import { Col } from "reactstrap";
+
+
 
 function Home(){
 
