@@ -30,11 +30,13 @@ function Wishlist(props) {
 
   const article = props.product;
 
-  // Hook d'effet : Lister des articles favoris du user
+  // Hook d'effet : Lister des articles favoris
   useEffect(() => {
     const findArticlesWishList = async () => {
       const dataWishlist = await fetch(`/wishlist-plants?token=${props.token}`);
       const body = await dataWishlist.json();
+
+      props.saveArticles(body.articles)
     };
 
     findArticlesWishList();
@@ -42,12 +44,14 @@ function Wishlist(props) {
 
   // Supprimer un article de la wishlist
   var deleteArticle = async (article) => {
-    props.deleteToWishList();
+    props.deleteToWishList({ 
+      id: article._id 
+    })
 
     const deleteReq = await fetch("/wishlist-plants", {
       method: "DELETE",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `name=${article}&token=${props.token}`,
+      body: `id=${article._id}&token=${props.token}`,
     });
 
     console.log("____CONSOLE LOG_______" + " " + article);
@@ -151,7 +155,7 @@ function Wishlist(props) {
                     <Button onClick={toggle}>Voir la fiche produit</Button>
                     <br />
 
-                    <Button onClick={() => deleteArticle(article.name)}>
+                    <Button onClick={() => deleteArticle(article)}>
                       Supprimer de mes favoris
                     </Button>
                   </div>
@@ -177,10 +181,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    deleteToWishList: function (articleTitle) {
+    deleteToWishList: function (id) {
       dispatch({
         type: "deleteArticle",
-        title: articleTitle,
+        title: id,
       })
     },
     saveArticles: function(articles){

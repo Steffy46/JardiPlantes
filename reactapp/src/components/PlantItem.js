@@ -18,7 +18,8 @@ import { connect } from "react-redux";
 
 function PlantItem(props) {
   // Etat - Plante favorite - couleur coeur
-  const [likePlant, setLikePlant] = useState({ color: "#ADADAD" });
+  // const [likePlant, setLikePlant] = useState({ color: "#ADADAD" });
+  const [likePlant, setLikePlant] = useState(false);
 
   // Etat modal
   const [modal, setModal] = useState(false);
@@ -37,28 +38,46 @@ function PlantItem(props) {
 
   // Ajouter une plante dans la wishlist au clic sur le coeur
   var saveArticle = async (article) => {
-    props.addToWishList({
-      name: article.name,
-      image: article.image,
-      category: article.category,
-      description: article.description,
-      price: article.price,
-      water: article.water,
-      sun: article.sun,
-    });
+    setLikePlant(!likePlant)
 
-    if (saveArticle.length > 0) {
-      setLikePlant({ color: "#FF0000" });
+    if(likePlant === false){
+
+      props.addToWishList({
+        id: article._id,
+        name: article.name,
+        image: article.image,
+        category: article.category,
+        description: article.description,
+        price: article.price,
+        water: article.water,
+        sun: article.sun,
+      });
+
+      const saveReq = await fetch("/wishlist-plants", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `name=${article.name}&price=${article.price}&description=${article.description}&image=${article.image}&token=${props.token}`,
+      });
+
     } else {
-      setLikePlant({ color: "#ADADAD" });
+      props.deleteToWishList({ 
+        id: article._id 
+      })
+
+      const deleteReq = await fetch("/wishlist-plants", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `id=${article._id}&token=${props.token}`,
+      });
     }
 
-    const saveReq = await fetch("/wishlist-plants", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `name=${article.name}&price=${article.price}&description=${article.description}&image=${article.image}&token=${props.token}`,
-    });
   };
+
+  if(likePlant == false){
+    var colorHeart = '#ADADAD'
+  } else {
+    var colorHeart = '#FF0000'
+  }
 
   return (
     <div>
@@ -73,7 +92,7 @@ function PlantItem(props) {
 
         <h3>
           <FontAwesomeIcon
-            style={likePlant}
+            style={{color: colorHeart}}
             icon={faHeart}
             onClick={() => {
               saveArticle(article);
@@ -159,6 +178,12 @@ function mapDispatchToProps(dispatch) {
         articleLiked: article 
       });
     },
+    deleteToWishList: function (id) {
+      dispatch({
+        type: "deleteArticle",
+        title: id,
+      })
+    }
   };
 }
 
