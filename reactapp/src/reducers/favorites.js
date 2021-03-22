@@ -20,27 +20,27 @@ export default function(wishList = [], action){
         return wishListCopy
     
     } else if(action.type === 'deleteArticle') {
-        // console.log('00', wishList)
-        // console.log('01', action.title)
+        console.log('00', wishList)
+        console.log('01', action.title)
        let wishListCopy = [...wishList]
-        // console.log('02', wishListCopy);
-        // let position = null
+        console.log('02', wishListCopy);
+        let position = null
 
 
-        // for(let i=0; i<wishListCopy.length; i++){
-        //     if(wishListCopy[i].title == action.title){
-        //         position = i
-        //     }
-        // }
-        const wishListDeleted = wishListCopy.findIndex(plante => plante.id !== action.title)
-        console.log('03', wishListDeleted)
+        for(let i=0; i<wishListCopy.length; i++){
+            console.log("03", wishListCopy[i].id, action.title)
+            if(wishListCopy[i].id == action.title.id){
+                position = i
+            }
+        }
 
-        // if(position != null){
-        //     wishListCopy.splice(position,1)
-        // }
+        if(position != null){
+            wishListCopy.splice(position,1)
+        }
+        console.log('04', wishListCopy)
 
 
-        return wishListDeleted
+        return wishListCopy
     
     } else {
         return wishList

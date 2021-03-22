@@ -54,7 +54,6 @@ function Wishlist(props) {
       body: `id=${article._id}&token=${props.token}`,
     });
 
-    console.log("____CONSOLE LOG_______" + " " + article);
   };
 
   // Pas d'articles dans la wishlist

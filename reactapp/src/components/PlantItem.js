@@ -36,7 +36,7 @@ function PlantItem(props) {
     );
   };
 
-  // Ajouter une plante dans la wishlist au clic sur le coeur
+  // Ajouter/ Supprimer un article dans la wishlist au clic sur le coeur
   var saveArticle = async (article) => {
     setLikePlant(!likePlant)
 
