@@ -55,7 +55,7 @@ function Wishlist(props) {
         body: `id=${article._id}&token=${props.token}`,
       });
    
-    }
+  }
       
 
   // Pas d'articles dans la wishlist
@@ -154,7 +154,7 @@ function Wishlist(props) {
                     <br />
 
                     <Button onClick={() => {
-                      deleteArticle(article);
+                      deleteArticle(article.id)
                       }}
                     >
                       Supprimer de mes favoris
@@ -190,11 +190,12 @@ function mapDispatchToProps(dispatch) {
         article: article
       });
     },
-    deleteToWishList: function (id) {
+    deleteToWishList: function (article) {
+      console.log("clic detecte " + article.name);
       dispatch({
         type: "deleteArticle",
-        title: id,
-      });
+        articleDisliked: article,
+      })
     }
   };
 }

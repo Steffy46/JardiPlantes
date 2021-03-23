@@ -6,7 +6,7 @@ export default function (wishList = [], action) {
     let findArticle = false;
 
     for (let i = 0; i < wishListCopy.length; i++) {
-      if (wishListCopy[i].title == action.articleLiked.title) {
+      if (wishListCopy[i].article == action.articleLiked.article) {
         findArticle = true;
       }
     }
@@ -17,20 +17,30 @@ export default function (wishList = [], action) {
 
     return wishListCopy;
   } else if (action.type === "deleteArticle") {
-    let wishListCopy = [...wishList];
-    let position = null;
-
-    for (let i = 0; i < wishListCopy.length; i++) {
-      if (wishListCopy[i].id == action.title.id) {
-        position = i;
-      }
-    }
-
-    if (position != null) {
-      wishListCopy.splice(position, 1);
-    }
+    var wishListCopy = wishList.filter(
+      (element) => element.id != action.articleDisliked.id
+    );
+    
+    console.log("00", wishList);
+    console.log("02", wishListCopy);
 
     return wishListCopy;
+
+    //   } else if (action.type === "deleteArticle") {
+    //     let wishListCopy = [...wishList];
+    //     let position = null;
+
+    //     for (let i = 0; i < wishListCopy.length; i++) {
+    //       if (wishListCopy[i].article == action.articleDisliked.article) {
+    //         position = i;
+    //       }
+    //     }
+
+    //     if (position != null) {
+    //       wishListCopy.splice(position, 1);
+    //     }
+
+    //     return wishListCopy;
   } else {
     return wishList;
   }

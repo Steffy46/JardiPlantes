@@ -178,11 +178,11 @@ function mapDispatchToProps(dispatch) {
         articleLiked: article 
       });
     },
-    deleteToWishList: function (id) {
-      console.log("clic detecte " + id.name);
+    deleteToWishList: function (article) {
+      console.log("clic detecte " + article.name);
       dispatch({
         type: "deleteArticle",
-        title: id,
+        articleDisliked: article,
       })
     }
   };
