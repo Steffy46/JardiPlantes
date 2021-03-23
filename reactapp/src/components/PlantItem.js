@@ -53,6 +53,8 @@ function PlantItem(props) {
         sun: article.sun,
       });
 
+      console.log('ADD FAVORITE', article)
+
       const saveReq = await fetch("/wishlist-plants", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -178,11 +180,11 @@ function mapDispatchToProps(dispatch) {
         articleLiked: article 
       });
     },
-    deleteToWishList: function (article) {
-      console.log("Suppression = clic detecte " + article.id);
+    deleteToWishList: function (id) {
+      console.log("clic detecte " + id.name);
       dispatch({
         type: "deleteArticle",
-        articleDisliked: article,
+        title: id,
       })
     }
   };

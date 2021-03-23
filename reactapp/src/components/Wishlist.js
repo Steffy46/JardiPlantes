@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 ///// Composants /////
 import Header from "./Header";
 import Footer from "./Footer";
-import CareScale from "./CareScale";
+import PlantModal from "./PlantModal";
 
 ///// Styles /////
 import "../styles/ShoppingList.css";
@@ -17,10 +17,10 @@ import { connect } from "react-redux";
 import {
   Col,
   Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  // Modal,
+  // ModalHeader,
+  // ModalBody,
+  // ModalFooter,
 } from "reactstrap";
 
 function Wishlist(props) {
@@ -30,6 +30,7 @@ function Wishlist(props) {
   // Ouverture modal
   const toggle = () => setModal(!modal);
 
+  console.log('TOGGLE', toggle)
   // Hook d'effet : Lister des articles favoris
   useEffect(() => {
     const findArticlesWishList = async () => {
@@ -41,7 +42,25 @@ function Wishlist(props) {
 
     findArticlesWishList();
   });
+
+  // Supprimer un article de la wishlist
+  var deleteArticle = async (article) => {
+
+      props.deleteToWishList({
+        id: article.id
+      })
+  
+      console.log('TEST', article)
+
+      const deleteReq = await fetch("/wishlist-plants", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `id=${article.id}&token=${props.token}`,
+      });
+   
+    }
       
+
 
   // Pas d'articles dans la wishlist
   let noArticles;
@@ -52,21 +71,6 @@ function Wishlist(props) {
       </div>
     );
   }
-
-    // Supprimer un article de la wishlist
-    var deleteArticle = async (article) => {
-
-      props.deleteToWishList({ 
-        id: article._id 
-      })
-    
-        const deleteReq = await fetch("/wishlist-plants", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `id=${article._id}&token=${props.token}`,
-        });
-     
-    }
 
   return (
     <Col lg="12">
@@ -96,7 +100,8 @@ function Wishlist(props) {
                   <h6>{article.category}</h6>
                   <br />
 
-                  <Modal isOpen={modal} toggle={toggle}>
+                  <PlantModal onClick={toggle} />
+                  {/* <Modal isOpen={modal} toggle={toggle}>
                     <ModalHeader toggle={toggle}>
                       <span style={{ marginBottom: 0 }}>{article.name}</span>{" "}
                       <br />{" "}
@@ -146,7 +151,7 @@ function Wishlist(props) {
                         Fermer
                       </Button>
                     </ModalFooter>
-                  </Modal>
+                  </Modal> */}
 
                   <div>
                     <Button onClick={toggle}>Voir la fiche produit</Button>
@@ -154,7 +159,7 @@ function Wishlist(props) {
                     <br />
 
                     <Button onClick={() => {
-                      deleteArticle(article)
+                      deleteArticle(article);
                       }}
                     >
                       Supprimer de mes favoris
@@ -165,13 +170,6 @@ function Wishlist(props) {
             );
           })}
         </div>
-
-
-
-
-
-
-        
       </div>
       <div>
         <Footer />
@@ -190,12 +188,11 @@ function mapDispatchToProps(dispatch) {
         article: article
       });
     },
-    deleteToWishList: function (article) {
-      console.log("Suppression = clic detecte " + article.id);
+    deleteToWishList: function (id) {
       dispatch({
         type: "deleteArticle",
-        articleDisliked: article,
-      })
+        title: id,
+      });
     }
   };
 }
@@ -207,7 +204,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps, 
-  mapDispatchToProps
-)(Wishlist);
+export default connect(mapStateToProps, mapDispatchToProps)(Wishlist);
