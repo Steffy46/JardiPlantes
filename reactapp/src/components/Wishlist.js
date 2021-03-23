@@ -58,7 +58,6 @@ function Wishlist(props) {
     }
       
 
-
   // Pas d'articles dans la wishlist
   let noArticles;
   if (props.myArticles == 0) {
@@ -166,6 +165,13 @@ function Wishlist(props) {
             );
           })}
         </div>
+
+
+
+
+
+
+        
       </div>
       <div>
         <Footer />
