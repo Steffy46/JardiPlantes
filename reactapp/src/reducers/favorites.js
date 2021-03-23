@@ -17,30 +17,27 @@ export default function (wishList = [], action) {
 
     return wishListCopy;
   } else if (action.type === "deleteArticle") {
-    var wishListCopy = wishList.filter(
-      (element) => element.id != action.articleDisliked.id
-    );
+    // var wishListCopy = wishList.filter(
+    //   (element) => element.article != action.articleDisliked.article
+    // );
     
-    console.log("00", wishList);
-    console.log("02", wishListCopy);
+    // console.log("00", wishList);
+    // console.log("02", wishListCopy);
+    
+        let wishListCopy = [...wishList];
+        let position = null;
 
-    return wishListCopy;
+        for (let i = 0; i < wishListCopy.length; i++) {
+          if (wishListCopy[i].article == action.articleDisliked.article) {
+            position = i;
+          }
+        }
 
-    //   } else if (action.type === "deleteArticle") {
-    //     let wishListCopy = [...wishList];
-    //     let position = null;
+        if (position !== null) {
+          wishListCopy.splice(position, 1);
+        }
 
-    //     for (let i = 0; i < wishListCopy.length; i++) {
-    //       if (wishListCopy[i].article == action.articleDisliked.article) {
-    //         position = i;
-    //       }
-    //     }
-
-    //     if (position != null) {
-    //       wishListCopy.splice(position, 1);
-    //     }
-
-    //     return wishListCopy;
+        return wishListCopy;
   } else {
     return wishList;
   }

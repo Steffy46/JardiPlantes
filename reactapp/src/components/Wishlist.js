@@ -41,21 +41,6 @@ function Wishlist(props) {
 
     findArticlesWishList();
   });
-
-  // Supprimer un article de la wishlist
-  var deleteArticle = async (article) => {
-
-      props.deleteToWishList({
-        id: article._id
-      })
-  
-      const deleteReq = await fetch("/wishlist-plants", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `id=${article._id}&token=${props.token}`,
-      });
-   
-  }
       
 
   // Pas d'articles dans la wishlist
@@ -67,6 +52,21 @@ function Wishlist(props) {
       </div>
     );
   }
+
+    // Supprimer un article de la wishlist
+    var deleteArticle = async (article) => {
+
+      props.deleteToWishList({ 
+        id: article._id 
+      })
+    
+        const deleteReq = await fetch("/wishlist-plants", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `id=${article._id}&token=${props.token}`,
+        });
+     
+    }
 
   return (
     <Col lg="12">
@@ -154,7 +154,7 @@ function Wishlist(props) {
                     <br />
 
                     <Button onClick={() => {
-                      deleteArticle(article.id)
+                      deleteArticle(article)
                       }}
                     >
                       Supprimer de mes favoris
@@ -191,7 +191,7 @@ function mapDispatchToProps(dispatch) {
       });
     },
     deleteToWishList: function (article) {
-      console.log("clic detecte " + article.name);
+      console.log("Suppression = clic detecte " + article.id);
       dispatch({
         type: "deleteArticle",
         articleDisliked: article,
@@ -207,4 +207,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wishlist);
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(Wishlist);
