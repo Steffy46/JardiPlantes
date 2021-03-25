@@ -41,7 +41,7 @@ function Wishlist(props) {
     };
 
     findArticlesWishList();
-  });
+  }, [props.token]);
 
   // Supprimer un article de la wishlist
   var deleteArticle = async (article) => {

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "../styles/Header.css";
 
 import logo from "../assets/jardiplante-logo.png";
-import { HomeFilled } from "@ant-design/icons";
+import { HomeFilled, PropertySafetyFilled } from "@ant-design/icons";
 
 ///// Redux /////
 import { connect } from "react-redux";
@@ -20,7 +20,7 @@ import {
   NavLink,
 } from "reactstrap";
 
-function Header() {
+function Header(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -54,6 +54,7 @@ function Header() {
                 <NavItem>
                   <NavLink>
                     <Link to="/login">Se connecter</Link>
+
                   </NavLink>
                 </NavItem>
 
