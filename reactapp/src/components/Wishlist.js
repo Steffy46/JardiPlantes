@@ -26,11 +26,14 @@ import {
 function Wishlist(props) {
   // Etat modal
   const [modal, setModal] = useState(false);
+  const [favorite, setFavorite] = useState([]);
+  const [change, setChange] = useState(false);
 
   // Ouverture modal
   const toggle = () => setModal(!modal);
 
-  console.log('TOGGLE', toggle)
+  //console.log('TOGGLE', toggle)
+
   // Hook d'effet : Lister des articles favoris
   useEffect(() => {
     const findArticlesWishList = async () => {
@@ -42,6 +45,7 @@ function Wishlist(props) {
 
     findArticlesWishList();
   }, [props.token]);
+
 
   // Supprimer un article de la wishlist
   var deleteArticle = async (article) => {
@@ -59,8 +63,6 @@ function Wishlist(props) {
       });
    
     }
-      
-
 
   // Pas d'articles dans la wishlist
   let noArticles;

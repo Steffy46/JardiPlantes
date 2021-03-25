@@ -25,6 +25,15 @@ function Header(props) {
 
   const toggle = () => setIsOpen(!isOpen);
 
+
+  // Condition connection
+  const connection = ()=>{
+    if (props.userConnected){
+      return <Link to="/login">Se déconnecter</Link>
+    }
+      return <Link to="/login">Se connecter</Link>
+  }
+
   return (
     <div>
       <div className="jp-header">
@@ -53,7 +62,9 @@ function Header(props) {
 
                 <NavItem>
                   <NavLink>
-                    <Link to="/login">Se connecter</Link>
+                    {/* <Link to="/login">Se connecter</Link> */}
+
+                    {connection()}
 
                   </NavLink>
                 </NavItem>
@@ -72,12 +83,12 @@ function Header(props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    resetUserConnected: function () {
-      dispatch({
-        type: "reset",
-      });
-    },
-  };
+      resetUserConnected: function () {
+          dispatch({
+              type: 'reset'
+          })
+      }
+  }
 }
 
 function mapStateToProps(state) {

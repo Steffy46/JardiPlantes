@@ -22,8 +22,8 @@ function Home(){
 	const [updateCart, setUpdateCart] = useState(savedCart ? JSON.parse(savedCart) : [])
 
     // Local storage des favoris
-    const savedFavorite = localStorage.getItem('updateFavorite')
-	const [updateFavorite, setUpdateFavorite] = useState(savedFavorite ? JSON.parse(savedFavorite) : [])
+    // const savedFavorite = localStorage.getItem('updateFavorite')
+	// const [updateFavorite, setUpdateFavorite] = useState(savedFavorite ? JSON.parse(savedFavorite) : [])
 
 
     useEffect(() => {
@@ -31,10 +31,10 @@ function Home(){
         localStorage.setItem('updateCart', JSON.stringify(updateCart))
 
         // Local storage des favoris
-        localStorage.setItem('updateFavorite', JSON.stringify(updateFavorite))
+        // localStorage.setItem('updateFavorite', JSON.stringify(updateFavorite))
 
 
-      }, [updateCart, updateFavorite])
+      }, [updateCart])
 
     return (
         <Col xs="6" md="9" lg="12">

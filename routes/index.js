@@ -120,9 +120,10 @@ router.get('/products', async function(req, res, next){
 ////// FAVORIS : AJOUT + SUPPRESSION  //////
 // Ajout d'une plante dans les favoris du user
 router.post('/wishlist-plants', async function(req,res,next){
-  const result = false;
+  let result = false;
 
   const user = await UserModel.findOne({token: req.body.token});
+
 
   if(user !== null){
     const newPlants = new ProductModel({
@@ -143,6 +144,7 @@ router.post('/wishlist-plants', async function(req,res,next){
   }
 
   res.json({result})
+
 })
 
 // Supprimer
@@ -163,13 +165,47 @@ router.delete('/wishlist-plants', async function(req, res, next){
 
 router.get('/wishlist-plants', async function(req, res, next) {
   const plants = []
-  const user = await UserModel.findOne({token: req.body.token})
+  const user = await UserModel.findOne({token: req.query.token})
 
   if(user !== null){
     plants = await ProductModel.find({userId: user._id})
   }
 
   res.json({plants})
+})
+
+// Mise à jour de la route wishlist
+router.put('/wishlist-plants', async function(req,res,next){
+  let result = false;
+
+  const user = await UserModel.findOneAndUpdate( {token: req.body.token}, {productID : {$push: req.body.id} });
+  console.log('BODY     ',req.body)
+
+  // const userNew = await UserModel.findOne({token: req.body.token})
+  // console.log('user new : ', userNew)
+
+  if(user !== null){
+    const newPlants = new ProductModel({
+      _id: req.body._id,
+      category: req.body.category,
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      image: req.body.image,
+      water: req.body.water,
+      sun: req.body.sun
+    })
+
+  console.log('LES FAVORIS USER BACKEND ', user); 
+
+    const savePlants = await newPlants.save();
+
+    if(savePlants.name){
+      result = true
+    }
+  }
+
+  res.json({result})
 })
 
 module.exports = router;

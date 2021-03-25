@@ -9,6 +9,9 @@ export default function (userConnected = {}, action) {
             email: action.user.email,
         };
 
+    } else if (action.type === 'reset') {
+        return {}
+
     } else {
         return userConnected;
     }
