@@ -33,22 +33,8 @@ function Home(props){
         localStorage.setItem('updateCart', JSON.stringify(updateCart))
 
         // Local storage des favoris
-        //localStorage.setItem('updateFavorite', JSON.stringify(updateFavorite))
+        localStorage.setItem('updateFavorite', JSON.stringify(updateFavorite))
 
-        const connection = async () => {
-
-            //// Record user connected on the reduce store /////
-            props.onRecordUserConnected(user);
-            const favorite = user.favorite.map(fav => {
-                const returnOb = {};
-                returnOb._id = fav._id;
-                returnOb.name = fav.name;
-                return returnOb;
-            })
-            props.retrieveArticle(favorite);
-        }
-
-        connection();
 
         if (props.user.firstName !== null && props.user.firstName !== "" && props.user.firstName !== undefined) {
             setWelcome("Bonjour " + props.user.firstName + " ! Vous pouvez ajouter des plantes à vos favoris ;)");

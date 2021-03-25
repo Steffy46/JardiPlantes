@@ -64,7 +64,7 @@ function Header(props) {
                 : 
                 <NavItem>
                   <NavLink>
-                    <Link to="/logout">Se déconnecter</Link>
+                    <Link to="/login">Se déconnecter</Link>
                   </NavLink>
                 </NavItem>
                  }
