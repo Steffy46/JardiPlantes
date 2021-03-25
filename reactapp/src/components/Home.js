@@ -5,7 +5,6 @@ import Header from './Header';
 import Cart from './Cart';
 import Footer from './Footer';
 import ShoppingList from './ShoppingList';
-import Wishlist from './Wishlist';
 
 ///// Styles /////
 import '../styles/Layout.css'
@@ -13,9 +12,11 @@ import '../styles/Layout.css'
 ///// ReactStrap /////
 import { Col } from "reactstrap";
 
+///// Redux /////
+import { connect } from "react-redux";
 
 
-function Home(){
+function Home(props){
 
     // Local storage du panier d'achat
     const savedCart = localStorage.getItem('updateCart')
@@ -25,16 +26,35 @@ function Home(){
     const savedFavorite = localStorage.getItem('updateFavorite')
 	const [updateFavorite, setUpdateFavorite] = useState(savedFavorite ? JSON.parse(savedFavorite) : [])
 
+    const [welcome, setWelcome] = useState('HOME');
 
     useEffect(() => {
         // Local storage du panier d'achat
         localStorage.setItem('updateCart', JSON.stringify(updateCart))
 
         // Local storage des favoris
-        localStorage.setItem('updateFavorite', JSON.stringify(updateFavorite))
+        //localStorage.setItem('updateFavorite', JSON.stringify(updateFavorite))
 
+        const connection = async () => {
 
-      }, [updateCart, updateFavorite])
+            //// Record user connected on the reduce store /////
+            props.onRecordUserConnected(user);
+            const favorite = user.favorite.map(fav => {
+                const returnOb = {};
+                returnOb._id = fav._id;
+                returnOb.name = fav.name;
+                return returnOb;
+            })
+            props.retrieveArticle(favorite);
+        }
+
+        connection();
+
+        if (props.user.firstName !== null && props.user.firstName !== "" && props.user.firstName !== undefined) {
+            setWelcome("Bonjour " + props.user.firstName + " ! Vous pouvez ajouter des plantes à vos favoris ;)");
+        }
+
+      }, [updateCart, updateFavorite, props.userConnected])
 
     return (
         <Col xs="6" md="9" lg="12">
@@ -54,4 +74,36 @@ function Home(){
     )
 }
 
-export default Home;
+function mapDispatchToProps(dispatch) {
+    return {
+        onRecordUserConnected: function (user) {
+            dispatch({
+                type: 'record',
+                user: user
+            })
+        },
+        resetUserConnected: function () {
+            dispatch({
+                type: 'reset'
+            })
+        },
+        retrieveArticle: function (listFavorites) {
+            dispatch({
+                type: 'retrieveArticle',
+                listFavorites: listFavorites
+            })
+        }
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        favorites: state.wishList,
+        user: state.userConnected
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Home);

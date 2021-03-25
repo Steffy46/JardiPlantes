@@ -20,7 +20,7 @@ import {
   NavLink,
 } from "reactstrap";
 
-function Header() {
+function Header(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -45,18 +45,30 @@ function Header() {
                   </NavLink>
                 </NavItem>
 
+
+                {props.userConnected === undefined ? <NavItem/> 
+                : 
                 <NavItem>
                   <NavLink>
                     <Link to="/wishlist">Wishlist</Link>
                   </NavLink>
-                </NavItem>
+                </NavItem> }
 
+               
+                {props.userConnected === undefined ? 
+                <NavItem>
+                <NavLink>
+                  <Link to="/login">Se connecter</Link>
+                </NavLink>
+              </NavItem>
+                : 
                 <NavItem>
                   <NavLink>
-                    <Link to="/login">Se connecter</Link>
+                    <Link to="/logout">Se déconnecter</Link>
                   </NavLink>
                 </NavItem>
-
+                 }
+               
               </Nav>
             </Collapse>
           </Navbar>

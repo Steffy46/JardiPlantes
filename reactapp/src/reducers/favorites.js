@@ -20,15 +20,15 @@ export default function(wishList = [], action){
         return wishListCopy
     
     } else if(action.type === 'deleteArticle') {
-        console.log('00', wishList)
-        console.log('01', action.title)
+        // console.log('00', wishList)
+        // console.log('01', action.title)
        let wishListCopy = [...wishList]
-        console.log('02', wishListCopy);
+        // console.log('02', wishListCopy);
         let position = null
 
 
         for(let i=0; i<wishListCopy.length; i++){
-            console.log("03", wishListCopy[i].id, action.title)
+            // console.log("03", wishListCopy[i].id, action.title)
             if(wishListCopy[i].id == action.title.id){
                 position = i
             }
@@ -37,11 +37,14 @@ export default function(wishList = [], action){
         if(position != null){
             wishListCopy.splice(position,1)
         }
-        console.log('04', wishListCopy)
+        // console.log('04', wishListCopy)
 
 
         return wishListCopy
     
+    } else if (action.type === 'retrieveArticle') {
+        return action.listFavorites
+
     } else {
         return wishList
     }

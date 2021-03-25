@@ -89,6 +89,14 @@ router.post('/sign-in', async function(req, res, next){
   res.json({ result, user, token, error })
 })
 
+router.get('/get-user', async function(req, res, next){
+  
+  const answerDb = await UserModel.findOne({token: req.query.token})
+    .populate('favorite')
+    .exec();
+
+    res.json({ user: answerDb })
+})
 
 ////// PRODUITS "PLANTES" : AJOUT + LECTURE  //////
 // Ajout d'une nouvelle plante

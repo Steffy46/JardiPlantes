@@ -93,13 +93,15 @@ function PlantItem(props) {
         />
 
         <h3>
-          <FontAwesomeIcon
+        {props.userConnected === undefined ? <FontAwesomeIcon/> : <FontAwesomeIcon style={{color: colorHeart}} icon={faHeart} onClick={() => { saveArticle(article) }} /> }
+          {/* <FontAwesomeIcon
             style={{color: colorHeart}}
             icon={faHeart}
             onClick={() => {
               saveArticle(article);
             }}
-          />{" "}
+          /> */}
+          {" "}
           {article.name}
         </h3>
 
@@ -192,7 +194,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    token: state.token
+    token: state.token,
+    userConnected: state.userConnected,
   };
 }
 
