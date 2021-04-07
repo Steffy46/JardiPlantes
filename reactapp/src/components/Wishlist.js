@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import PlantModal from "./PlantModal";
+// import CareScale from "./CareScale";
 
 ///// Styles /////
 import "../styles/ShoppingList.css";
 import "../styles/PlantItem.css";
+import "../styles/Layout.css";
 
 ///// Redux /////
 import { connect } from "react-redux";
@@ -26,13 +28,11 @@ import {
 function Wishlist(props) {
   // Etat modal
   const [modal, setModal] = useState(false);
-  const [favorite, setFavorite] = useState([]);
-  const [change, setChange] = useState(false);
+  // const [favorite, setFavorite] = useState([]);
+  // const [change, setChange] = useState(false);
 
   // Ouverture modal
   const toggle = () => setModal(!modal);
-
-  //console.log('TOGGLE', toggle)
 
   // Hook d'effet : Lister des articles favoris
   useEffect(() => {
@@ -62,7 +62,7 @@ function Wishlist(props) {
         body: `id=${article.id}&token=${props.token}`,
       });
    
-    }
+  }
 
   // Pas d'articles dans la wishlist
   let noArticles;
@@ -75,12 +75,12 @@ function Wishlist(props) {
   }
 
   return (
-    <Col lg="12">
+    <Col lg="12" md="6" sm="2">
       <div>
         <Header />
       </div>
 
-      <div className="jp-layout-inner" md="6" sm="2">
+      <div className="jp-layout" >
         <h1>Ma wishlist</h1>
         <Link to="/">Retourner à l'accueil</Link>
 
@@ -102,64 +102,15 @@ function Wishlist(props) {
                   <h6>{article.category}</h6>
                   <br />
 
-                  <PlantModal onClick={toggle} />
-                  {/* <Modal isOpen={modal} toggle={toggle}>
-                    <ModalHeader toggle={toggle}>
-                      <span style={{ marginBottom: 0 }}>{article.name}</span>{" "}
-                      <br />{" "}
-                      <span
-                        style={{
-                          color: "#bbbbbb",
-                          fontSize: "14px",
-                          marginTop: 0,
-                        }}
-                      >
-                        {article.category}
-                      </span>
-                    </ModalHeader>
-
-                    <ModalBody>
-                      <img
-                        src={article.image}
-                        style={{ width: "100px", marginRight: "20px" }}
-                      />{" "}
-                      {article.description}
-                      <div
-                        className="btn-group"
-                        role="group"
-                        aria-label="Basic example"
-                      ></div>
-                      <div>
-                        <h6>Arrosage : </h6>
-                        <CareScale
-                          careType="water"
-                          scaleValue={article.water}
-                        />
-                        <p>Luminosité : </p>
-                        <CareScale careType="light" scaleValue={article.sun} />
-                      </div>
-                    </ModalBody>
-
-                    <ModalFooter>
-                      <Button
-                        color="secondary"
-                        style={{
-                          backgroundColor: "#31b572",
-                          border: "0",
-                          width: "120px",
-                        }}
-                        onClick={toggle}
-                      >
-                        Fermer
-                      </Button>
-                    </ModalFooter>
-                  </Modal> */}
+                
 
                   <div>
-                    <Button onClick={toggle}>Voir la fiche produit</Button>
+                    <Button onClick={toggle}>
+                      <PlantModal />
+                      Voir la fiche produit</Button>
                     <br />
                     <br />
-
+                    
                     <Button onClick={() => {
                       deleteArticle(article);
                       }}

@@ -134,7 +134,7 @@ function PlantItem(props) {
             <ModalBody>
               <img
                 src={article.image}
-                style={{ width: "100px", marginRight: "20px" }}
+                style={{ width: "200px", marginRight: "20px", float: "left" }}
               />{" "}
               {article.description}
             </ModalBody>

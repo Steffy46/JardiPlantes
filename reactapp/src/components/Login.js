@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 ///// Composants /////
 import Header from "./Header";
@@ -86,13 +86,15 @@ function Login(props) {
   return (
     <div>
       <Header />
+      <div className="jp-login-head">
 
       <h1>Inscription / Connection</h1>
       <p>
         Bienvenue dans l'univers de Jardi Plantes ! Grâce à votre compte vous
         pouvez retrouver vos plantes préférées dans vos favoris
       </p>
-      <Link to="/">Retourner à l'accueil</Link>
+
+      </div>
 
       <div className="jp-login-page">
         {/* SIGN-IN */}

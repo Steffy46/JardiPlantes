@@ -20,6 +20,12 @@
     background-size: cover;
 }
 
+.jp-login-head {
+    background-color: #cccccc;
+    height:30px;
+    text-align: center;
+}
+
 .jp-login-input{
   margin: 15px;
   width: 400px;

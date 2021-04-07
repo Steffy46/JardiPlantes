@@ -30,8 +30,10 @@ function PlantModal(props) {
 
   return (
     <div className="jp-plant-item">
-      <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>
+      {/* <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}> */}
+        <Modal>
+        <ModalHeader>
           <span style={{ marginBottom: 0 }}>{props.name}</span> <br />{" "}
           <span
             style={{
