@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 ///// Composants /////
 import PlantItem from "./PlantItem";
@@ -70,10 +69,9 @@ function ShoppingList({ updateCart, setUpdateCart }) {
 
   
   return (
-    <Col xs="6" md="9" lg="12">
+    <Col>
       <div className="jp-shopping-list">
         <h1>Page shopping</h1>
-        <Link to="/">Retourner à l'accueil</Link>
 
         {/* Lister les différentes catégories de plantes */}
         <Categories

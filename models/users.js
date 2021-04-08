@@ -10,7 +10,9 @@ const userSchema = mongoose.Schema({
         type: String,
         enum: ['client', 'admin']
     },
-    favorite: [{ type: mongoose.Schema.Types.ObjectId, ref: 'articles' }],
+    // favorite: [{ type: mongoose.Schema.Types.ObjectId, ref: 'articles' }],
+    productId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }]
+
 })
 
 const UserModel = mongoose.model('users', userSchema)

@@ -1,4 +1,3 @@
-
 export default function(wishList = [], action){
 
     if(action.type === 'addArticle'){

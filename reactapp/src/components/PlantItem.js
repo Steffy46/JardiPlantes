@@ -29,6 +29,8 @@ function PlantItem(props) {
 
   const article = props.product;
 
+  
+
   // Alerte simple - pour test selection article
   const handleClick = async () => {
     alert(
@@ -56,9 +58,9 @@ function PlantItem(props) {
       console.log('ADD FAVORITE', article)
 
       const saveReq = await fetch("/wishlist-plants", {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `name=${article.name}&price=${article.price}&description=${article.description}&image=${article.image}&token=${props.token}`,
+        body: `id=${article._id}&name=${article.name}&price=${article.price}&description=${article.description}&image=${article.image}&token=${props.token}`,
       });
 
     } else {
@@ -134,7 +136,7 @@ function PlantItem(props) {
             <ModalBody>
               <img
                 src={article.image}
-                style={{ width: "100px", marginRight: "20px" }}
+                style={{ width: "200px", marginRight: "20px", float: "left" }}
               />{" "}
               {article.description}
             </ModalBody>

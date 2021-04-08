@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 ///// Composants /////
 import Header from "./Header";
 import Footer from "./Footer";
-import PlantModal from "./PlantModal";
 
 ///// Styles /////
 import "../styles/ShoppingList.css";
 import "../styles/PlantItem.css";
+import "../styles/Layout.css";
 
 ///// Redux /////
 import { connect } from "react-redux";
@@ -16,21 +16,11 @@ import { connect } from "react-redux";
 ///// ReactStrap /////
 import {
   Col,
-  Button,
-  // Modal,
-  // ModalHeader,
-  // ModalBody,
-  // ModalFooter,
+  Button
 } from "reactstrap";
 
 function Wishlist(props) {
-  // Etat modal
-  const [modal, setModal] = useState(false);
 
-  // Ouverture modal
-  const toggle = () => setModal(!modal);
-
-  console.log('TOGGLE', toggle)
   // Hook d'effet : Lister des articles favoris
   useEffect(() => {
     const findArticlesWishList = async () => {
@@ -41,7 +31,8 @@ function Wishlist(props) {
     };
 
     findArticlesWishList();
-  });
+  }, [props.token]);
+
 
   // Supprimer un article de la wishlist
   var deleteArticle = async (article) => {
@@ -58,9 +49,7 @@ function Wishlist(props) {
         body: `id=${article.id}&token=${props.token}`,
       });
    
-    }
-      
-
+  }
 
   // Pas d'articles dans la wishlist
   let noArticles;
@@ -73,12 +62,12 @@ function Wishlist(props) {
   }
 
   return (
-    <Col lg="12">
+    <Col lg="12" md="6" xs="2">
       <div>
         <Header />
       </div>
 
-      <div className="jp-layout-inner" md="6" sm="2">
+      <div className="jp-layout" >
         <h1>Ma wishlist</h1>
         <Link to="/">Retourner à l'accueil</Link>
 
@@ -98,66 +87,11 @@ function Wishlist(props) {
                   />
                   <h3>{article.name}</h3>
                   <h6>{article.category}</h6>
-                  <br />
-
-                  <PlantModal onClick={toggle} />
-                  {/* <Modal isOpen={modal} toggle={toggle}>
-                    <ModalHeader toggle={toggle}>
-                      <span style={{ marginBottom: 0 }}>{article.name}</span>{" "}
-                      <br />{" "}
-                      <span
-                        style={{
-                          color: "#bbbbbb",
-                          fontSize: "14px",
-                          marginTop: 0,
-                        }}
-                      >
-                        {article.category}
-                      </span>
-                    </ModalHeader>
-
-                    <ModalBody>
-                      <img
-                        src={article.image}
-                        style={{ width: "100px", marginRight: "20px" }}
-                      />{" "}
-                      {article.description}
-                      <div
-                        className="btn-group"
-                        role="group"
-                        aria-label="Basic example"
-                      ></div>
-                      <div>
-                        <h6>Arrosage : </h6>
-                        <CareScale
-                          careType="water"
-                          scaleValue={article.water}
-                        />
-                        <p>Luminosité : </p>
-                        <CareScale careType="light" scaleValue={article.sun} />
-                      </div>
-                    </ModalBody>
-
-                    <ModalFooter>
-                      <Button
-                        color="secondary"
-                        style={{
-                          backgroundColor: "#31b572",
-                          border: "0",
-                          width: "120px",
-                        }}
-                        onClick={toggle}
-                      >
-                        Fermer
-                      </Button>
-                    </ModalFooter>
-                  </Modal> */}
+                  <br />          
 
                   <div>
-                    <Button onClick={toggle}>Voir la fiche produit</Button>
                     <br />
-                    <br />
-
+                    
                     <Button onClick={() => {
                       deleteArticle(article);
                       }}

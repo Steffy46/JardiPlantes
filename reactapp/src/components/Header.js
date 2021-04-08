@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "../styles/Header.css";
 
 import logo from "../assets/jardiplante-logo.png";
-import { HomeFilled } from "@ant-design/icons";
+import { HomeFilled, PropertySafetyFilled } from "@ant-design/icons";
 
 ///// Redux /////
 import { connect } from "react-redux";
@@ -24,6 +24,15 @@ function Header(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
+
+
+  // Condition connection
+  const connection = ()=>{
+    if (props.userConnected){
+      return <Link to="/login">Se déconnecter</Link>
+    }
+      return <Link to="/login">Se connecter</Link>
+  }
 
   return (
     <div>
@@ -64,7 +73,10 @@ function Header(props) {
                 : 
                 <NavItem>
                   <NavLink>
-                    <Link to="/login">Se déconnecter</Link>
+                   
+
+                    {connection()}
+
                   </NavLink>
                 </NavItem>
                  }
@@ -83,12 +95,12 @@ function Header(props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    resetUserConnected: function () {
-      dispatch({
-        type: "reset",
-      });
-    },
-  };
+      resetUserConnected: function () {
+          dispatch({
+              type: 'reset'
+          })
+      }
+  }
 }
 
 function mapStateToProps(state) {
