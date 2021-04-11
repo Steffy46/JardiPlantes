@@ -3,7 +3,7 @@ var request = require("supertest")
 const UserModel = require("../models/users")
 const { connection, Mongoose } = require("mongoose")
 
-describe('Tests de connection', () => {
+describe('Tests routes plantes', () => {
 
     router.post('/products', (req, res) => {
     let name = req.body.name;
