@@ -16,9 +16,9 @@ function CareScale({ scaleValue, careType }) {
 
   const scaleType =
     careType === "light" ? (
-      <img src={Sun} alt="sun-icon" />
+      <img src={Sun} alt="Besoins d'ensoleillement des plantes" />
     ) : (
-      <img src={Water} alt="water-icon" />
+      <img src={Water} alt="Besoins en eau des plantes" />
     );
 
   return (

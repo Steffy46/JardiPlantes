@@ -62,7 +62,7 @@ function Wishlist(props) {
   }
 
   return (
-    <Col lg="12" md="6" xs="2">
+    <Col xs="12">
       <div>
         <Header />
       </div>

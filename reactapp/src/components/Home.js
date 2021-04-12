@@ -22,24 +22,16 @@ function Home(props){
     const savedCart = localStorage.getItem('updateCart')
 	const [updateCart, setUpdateCart] = useState(savedCart ? JSON.parse(savedCart) : [])
 
-    // Local storage des favoris
-    // const savedFavorite = localStorage.getItem('updateFavorite')
-	// const [updateFavorite, setUpdateFavorite] = useState(savedFavorite ? JSON.parse(savedFavorite) : [])
-
-    const [welcome, setWelcome] = useState('HOME');
+    // const [welcome, setWelcome] = useState('HOME');
 
     useEffect(() => {
         // Local storage du panier d'achat
         localStorage.setItem('updateCart', JSON.stringify(updateCart))
 
-        // Local storage des favoris
-        // localStorage.setItem('updateFavorite', JSON.stringify(updateFavorite))
-
-
       }, updateCart)
 
     return (
-        <Col xs="12" md="9" lg="12">
+        <Col xs="12">
             <div className="Font-link">
                 <Header/>
             </div>
